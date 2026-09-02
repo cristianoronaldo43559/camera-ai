@@ -1,20 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Camera AI</title>
 
-    <!-- TensorFlow.js -->
+    <!-- AI libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-
-    <!-- COCO-SSD Object Detection -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
-
 
     <style>
 
@@ -33,6 +29,7 @@
 
         h1 {
             margin-top: 10px;
+            font-size: 32px;
         }
 
         #status {
@@ -43,7 +40,7 @@
         .cameraBox {
             position: relative;
             width: 95%;
-            max-width: 600px;
+            max-width: 650px;
             margin: auto;
             border-radius: 20px;
             overflow: hidden;
@@ -64,8 +61,8 @@
         }
 
         button {
-            margin: 15px 5px;
-            padding: 14px 22px;
+            margin: 8px 4px;
+            padding: 14px 20px;
             border: none;
             border-radius: 12px;
             font-size: 17px;
@@ -73,17 +70,22 @@
         }
 
         #result {
-            margin: 20px auto;
+            margin: 20px auto 10px;
             padding: 15px;
-            max-width: 600px;
+            max-width: 650px;
             background: #222;
             border-radius: 15px;
             font-size: 22px;
         }
 
         #objects {
-            margin-top: 10px;
+            margin: 10px auto;
+            max-width: 650px;
+            padding: 12px;
+            background: #1b1b1b;
+            border-radius: 12px;
             font-size: 17px;
+            line-height: 1.6;
         }
 
     </style>
@@ -105,7 +107,11 @@
     </button>
 
     <button onclick="stopCamera()">
-        ⛔ Stop
+        ⛔ Stop Camera
+    </button>
+
+    <button onclick="toggleVoice()" id="voiceButton">
+        🔊 Voice: ON
     </button>
 
 
@@ -126,14 +132,26 @@
         Waiting for camera...
     </div>
 
+
     <div id="objects"></div>
 
 
 <script>
 
+    // ==========================================
+    // VARIABLES
+    // ==========================================
+
     let model = null;
 
     let cameraRunning = false;
+
+    let voiceEnabled = true;
+
+    let lastSpokenObject = "";
+
+    let lastSpokenTime = 0;
+
 
     const video =
         document.getElementById("camera");
@@ -153,17 +171,20 @@
     const objects =
         document.getElementById("objects");
 
+    const voiceButton =
+        document.getElementById("voiceButton");
 
-    // =====================================
-    // LOAD AI
-    // =====================================
+
+    // ==========================================
+    // LOAD AI MODEL
+    // ==========================================
 
     async function loadAI() {
 
         try {
 
             status.innerText =
-                "🧠 Loading AI...";
+                "🧠 Loading AI model...";
 
             model = await cocoSsd.load();
 
@@ -183,16 +204,16 @@
                 "❌ AI failed to load";
 
             result.innerText =
-                error.message;
+                "Error: " + error.message;
 
         }
 
     }
 
 
-    // =====================================
+    // ==========================================
     // START CAMERA
-    // =====================================
+    // ==========================================
 
     async function startCamera() {
 
@@ -212,6 +233,7 @@
                 await navigator.mediaDevices.getUserMedia({
 
                     video: {
+
                         facingMode: {
                             ideal: "environment"
                         },
@@ -223,6 +245,7 @@
                         height: {
                             ideal: 720
                         }
+
                     },
 
                     audio: false
@@ -234,11 +257,13 @@
 
             cameraRunning = true;
 
+
             status.innerText =
                 "📷 Camera active";
 
             result.innerText =
                 "🔎 Looking for objects...";
+
 
             detectObjects();
 
@@ -256,9 +281,9 @@
     }
 
 
-    // =====================================
+    // ==========================================
     // STOP CAMERA
-    // =====================================
+    // ==========================================
 
     function stopCamera() {
 
@@ -270,9 +295,9 @@
             const tracks =
                 video.srcObject.getTracks();
 
-            tracks.forEach(track => {
-                track.stop();
-            });
+            tracks.forEach(
+                track => track.stop()
+            );
 
             video.srcObject = null;
 
@@ -291,16 +316,156 @@
             "⛔ Camera stopped";
 
         result.innerText =
-            "Press Start Camera";
+            "📷 Press Start Camera";
 
         objects.innerText = "";
 
     }
 
 
-    // =====================================
+    // ==========================================
+    // VOICE ON / OFF
+    // ==========================================
+
+    function toggleVoice() {
+
+        voiceEnabled =
+            !voiceEnabled;
+
+
+        if (voiceEnabled) {
+
+            voiceButton.innerText =
+                "🔊 Voice: ON";
+
+        }
+
+        else {
+
+            voiceButton.innerText =
+                "🔇 Voice: OFF";
+
+            window.speechSynthesis.cancel();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // AI VOICE
+    // ==========================================
+
+    function speakDetection(
+        objectName,
+        confidence
+    ) {
+
+        if (!voiceEnabled) {
+            return;
+        }
+
+
+        const now =
+            Date.now();
+
+
+        // Don't repeat the same object too quickly
+        if (
+            objectName === lastSpokenObject &&
+            now - lastSpokenTime < 3000
+        ) {
+
+            return;
+
+        }
+
+
+        lastSpokenObject =
+            objectName;
+
+        lastSpokenTime =
+            now;
+
+
+        let message;
+
+
+        // Custom voice responses
+        if (objectName === "person") {
+
+            message =
+                `I see a person. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+        else if (objectName === "bottle") {
+
+            message =
+                `I see a bottle. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+        else if (objectName === "cell phone") {
+
+            message =
+                `I see a phone. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+        else if (objectName === "laptop") {
+
+            message =
+                `I see a laptop. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+        else if (objectName === "chair") {
+
+            message =
+                `I see a chair. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+        else {
+
+            message =
+                `I see a ${objectName}. ` +
+                `Confidence ${confidence} percent.`;
+
+        }
+
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                message
+            );
+
+
+        speech.rate = 1;
+
+        speech.pitch = 1;
+
+        speech.volume = 1;
+
+
+        window.speechSynthesis.cancel();
+
+        window.speechSynthesis.speak(
+            speech
+        );
+
+    }
+
+
+    // ==========================================
     // OBJECT DETECTION
-    // =====================================
+    // ==========================================
 
     async function detectObjects() {
 
@@ -324,7 +489,7 @@
         }
 
 
-        // Match canvas to video
+        // Match canvas to camera
         canvas.width =
             video.videoWidth;
 
@@ -334,11 +499,12 @@
 
         try {
 
+            // Ask AI to detect objects
             const predictions =
                 await model.detect(video);
 
 
-            // Clear previous boxes
+            // Clear old boxes
             ctx.clearRect(
                 0,
                 0,
@@ -347,7 +513,7 @@
             );
 
 
-            // Only show reasonably confident detections
+            // Only use detections above 50%
             const filtered =
                 predictions.filter(
                     prediction =>
@@ -355,18 +521,28 @@
                 );
 
 
+            // ==================================
+            // NOTHING DETECTED
+            // ==================================
+
             if (filtered.length === 0) {
 
                 result.innerText =
                     "👀 No object detected";
 
-                objects.innerText = "";
+                objects.innerText =
+                    "";
 
             }
 
+
+            // ==================================
+            // OBJECTS DETECTED
+            // ==================================
+
             else {
 
-                // Strongest detection first
+                // Highest confidence first
                 filtered.sort(
                     (a, b) =>
                         b.score - a.score
@@ -383,15 +559,25 @@
                     );
 
 
+                // Display main result
                 result.innerText =
                     `🎯 I see a ${best.class}! ` +
                     `${confidence}% confidence`;
 
 
-                // List all detected objects
+                // Speak result
+                speakDetection(
+                    best.class,
+                    confidence
+                );
+
+
+                // ==================================
+                // LIST ALL OBJECTS
+                // ==================================
 
                 objects.innerHTML =
-                    "<strong>Objects:</strong><br>" +
+                    "<strong>🔎 Objects detected:</strong><br>" +
 
                     filtered.map(
                         item => {
@@ -400,6 +586,7 @@
                                 Math.round(
                                     item.score * 100
                                 );
+
 
                             return (
                                 `• ${item.class} — ` +
@@ -411,7 +598,6 @@
 
 
                 // Draw boxes
-
                 drawBoxes(filtered);
 
             }
@@ -428,7 +614,7 @@
         }
 
 
-        // Run again
+        // Run detection again
         setTimeout(
             detectObjects,
             300
@@ -437,9 +623,9 @@
     }
 
 
-    // =====================================
+    // ==========================================
     // DRAW BOUNDING BOXES
-    // =====================================
+    // ==========================================
 
     function drawBoxes(predictions) {
 
@@ -460,7 +646,7 @@
                 ] = prediction.bbox;
 
 
-                // Box
+                // Draw rectangle
                 ctx.strokeRect(
                     x,
                     y,
@@ -479,29 +665,29 @@
                     `${prediction.class} ${confidence}%`;
 
 
-                // Label background
                 const textWidth =
                     ctx.measureText(label).width;
 
 
+                // Label background
                 ctx.fillRect(
                     x,
                     Math.max(
                         0,
-                        y - 28
+                        y - 30
                     ),
-                    textWidth + 12,
-                    28
+                    textWidth + 14,
+                    30
                 );
 
 
                 // Label text
                 ctx.fillText(
                     label,
-                    x + 6,
+                    x + 7,
                     Math.max(
-                        20,
-                        y - 8
+                        21,
+                        y - 9
                     )
                 );
 
@@ -511,9 +697,9 @@
     }
 
 
-    // =====================================
-    // START LOADING AI
-    // =====================================
+    // ==========================================
+    // START AI
+    // ==========================================
 
     loadAI();
 
@@ -522,3 +708,4 @@
 </body>
 
 </html>
+```
