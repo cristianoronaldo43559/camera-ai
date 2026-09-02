@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera AI</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        video {
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 20px;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #result {
+            font-size: 25px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🤖 Camera AI</h1>
+
+    <button onclick="startCamera()">
+        📷 Start Camera
+    </button>
+
+    <br>
+
+    <video id="camera" autoplay playsinline></video>
+
+    <div id="result">
+        Point the camera at something 👀
+    </div>
+
+
+    <script>
+
+        const camera = document.getElementById("camera");
+        const result = document.getElementById("result");
+
+
+        async function startCamera() {
+
+            try {
+
+                const stream =
+                    await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: "environment"
+                        }
+                    });
+
+                camera.srcObject = stream;
+
+                result.innerText =
+                    "📷 Camera is working!";
+
+            }
+
+            catch(error) {
+
+                result.innerText =
+                    "❌ Could not access camera";
+
+                console.log(error);
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>
