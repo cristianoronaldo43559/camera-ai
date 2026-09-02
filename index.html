@@ -18,46 +18,46 @@
 
 body{
     margin:0;
-    background:
-        radial-gradient(circle at top,#172033 0%,#080b12 45%,#030407 100%);
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
     min-height:100vh;
+    background:
+        radial-gradient(circle at 50% -20%,#18263d,#080b12 45%,#020306);
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 header{
-    padding:22px 20px 10px;
     text-align:center;
+    padding:22px 15px 12px;
 }
 
 .logo{
-    font-size:32px;
-    font-weight:bold;
-    letter-spacing:1px;
+    font-size:31px;
+    font-weight:800;
+    letter-spacing:2px;
 }
 
 .subtitle{
-    color:#7f8da3;
-    margin-top:7px;
+    color:#77849a;
+    margin-top:6px;
 }
 
 .container{
-    width:95%;
+    width:94%;
     max-width:900px;
     margin:auto;
 }
 
 /* STATUS */
 
-.statusBar{
+.status{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    padding:13px 16px;
+    border-radius:16px;
     background:rgba(255,255,255,.05);
     border:1px solid rgba(255,255,255,.08);
-    padding:12px 15px;
-    border-radius:15px;
-    margin:15px 0;
+    margin-bottom:14px;
 }
 
 .statusLeft{
@@ -66,34 +66,33 @@ header{
     gap:9px;
 }
 
-.dot{
+.statusDot{
     width:10px;
     height:10px;
-    background:#ff3b3b;
     border-radius:50%;
-    box-shadow:0 0 12px #ff3b3b;
+    background:#ff4040;
+    box-shadow:0 0 12px #ff4040;
 }
 
-.dot.active{
+.statusDot.active{
     background:#00ff9d;
     box-shadow:0 0 15px #00ff9d;
 }
 
 /* CAMERA */
 
-.cameraBox{
+.camera{
     position:relative;
-    width:100%;
-    background:#000;
-    border-radius:24px;
     overflow:hidden;
+    border-radius:24px;
+    background:#000;
     border:1px solid rgba(255,255,255,.1);
-    box-shadow:0 20px 60px rgba(0,0,0,.5);
+    box-shadow:0 20px 60px rgba(0,0,0,.55);
 }
 
 video{
-    width:100%;
     display:block;
+    width:100%;
     background:#000;
 }
 
@@ -105,98 +104,101 @@ canvas{
     pointer-events:none;
 }
 
-/* SCANNER */
+/* SCAN */
 
-.scanLine{
+.scan{
     position:absolute;
     left:0;
+    top:0;
     width:100%;
     height:2px;
     background:#00ff9d;
-    box-shadow:0 0 15px #00ff9d;
+    box-shadow:0 0 18px #00ff9d;
     opacity:0;
 }
 
-.cameraBox.scanning .scanLine{
+.scanning .scan{
     opacity:.7;
     animation:scan 2.5s linear infinite;
 }
 
 @keyframes scan{
-    0%{top:0}
-    50%{top:100%}
-    100%{top:0}
+
+    0%{
+        top:0;
+    }
+
+    50%{
+        top:100%;
+    }
+
+    100%{
+        top:0;
+    }
+
 }
 
 /* CONTROLS */
 
 .controls{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:1fr 1fr;
     gap:10px;
-    margin-top:15px;
+    margin-top:14px;
 }
 
 button{
-    border:1px solid rgba(255,255,255,.1);
-    background:#151b28;
-    color:#fff;
-    padding:14px;
+    border:0;
     border-radius:13px;
-    font-size:16px;
+    padding:14px 10px;
+    color:white;
+    background:#151c2a;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:15px;
+    font-weight:600;
     cursor:pointer;
-    transition:.2s;
 }
 
-button:hover{
-    background:#202a3c;
-    transform:translateY(-1px);
+button:active{
+    transform:scale(.97);
 }
 
 .start{
-    background:#00b878;
-}
-
-.start:hover{
-    background:#00d88d;
+    background:#00a96f;
 }
 
 .stop{
-    background:#b82c38;
-}
-
-.stop:hover{
-    background:#d93645;
+    background:#a72d39;
 }
 
 .voiceOn{
-    background:#294f45;
+    background:#245347;
 }
 
 .voiceOff{
-    background:#3b2025;
+    background:#40242a;
 }
 
 /* RESULT */
 
-.mainResult{
-    margin-top:15px;
-    padding:20px;
+.result{
+    margin-top:14px;
+    padding:19px;
+    border-radius:18px;
     background:rgba(255,255,255,.05);
     border:1px solid rgba(255,255,255,.08);
-    border-radius:18px;
 }
 
-.resultTitle{
-    color:#7f8da3;
-    font-size:13px;
+.smallTitle{
+    color:#758198;
+    font-size:12px;
     text-transform:uppercase;
     letter-spacing:1px;
 }
 
 #result{
-    font-size:25px;
     margin-top:8px;
+    font-size:24px;
     font-weight:bold;
 }
 
@@ -206,45 +208,45 @@ button:hover{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
-    margin-top:12px;
+    margin-top:10px;
 }
 
 .stat{
+    padding:14px;
+    border-radius:15px;
     background:rgba(255,255,255,.04);
     border:1px solid rgba(255,255,255,.07);
-    padding:15px;
-    border-radius:15px;
 }
 
-.statName{
-    color:#748197;
-    font-size:12px;
+.statLabel{
+    color:#68758b;
+    font-size:11px;
 }
 
 .statValue{
+    margin-top:5px;
     font-size:21px;
     font-weight:bold;
-    margin-top:5px;
 }
 
 /* OBJECTS */
 
-.objectsPanel{
-    margin-top:12px;
+.panel{
+    margin-top:10px;
     padding:17px;
+    border-radius:18px;
     background:rgba(255,255,255,.04);
     border:1px solid rgba(255,255,255,.07);
-    border-radius:18px;
 }
 
 .panelTitle{
-    font-size:17px;
+    font-size:16px;
     font-weight:bold;
     margin-bottom:12px;
 }
 
 .object{
-    margin:10px 0;
+    margin:11px 0;
 }
 
 .objectTop{
@@ -254,86 +256,71 @@ button:hover{
 }
 
 .bar{
-    width:100%;
     height:7px;
-    background:#171d28;
+    background:#151b27;
     border-radius:20px;
     overflow:hidden;
 }
 
-.barFill{
+.fill{
     height:100%;
     background:#00d98b;
     border-radius:20px;
-    transition:.3s;
 }
 
 /* SETTINGS */
 
-.settings{
-    margin-top:12px;
-    padding:17px;
-    background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:18px;
-}
-
 .setting{
-    margin:15px 0;
+    margin-top:16px;
 }
 
-.setting label{
+.settingLabel{
     display:flex;
     justify-content:space-between;
-    color:#aab4c5;
+    color:#aeb8c9;
     margin-bottom:8px;
 }
 
-select,
 input[type="range"]{
     width:100%;
-}
-
-select{
-    background:#111722;
-    color:white;
-    border:1px solid #293244;
-    padding:11px;
-    border-radius:10px;
-}
-
-input[type="range"]{
     accent-color:#00d98b;
 }
 
-/* FOOTER */
+select{
+    width:100%;
+    padding:11px;
+    border-radius:10px;
+    background:#101620;
+    color:white;
+    border:1px solid #293345;
+}
 
 .footer{
     text-align:center;
-    color:#4e5a6e;
+    color:#4d596c;
+    font-size:11px;
     padding:25px;
-    font-size:12px;
 }
 
 @media(max-width:600px){
 
     .logo{
-        font-size:27px;
+        font-size:26px;
     }
 
     #result{
-        font-size:21px;
+        font-size:20px;
     }
 
-    .stats{
-        grid-template-columns:1fr 1fr 1fr;
+    button{
+        padding:15px 7px;
     }
 
 }
 
 </style>
-
 </head>
+
 
 <body>
 
@@ -344,7 +331,7 @@ input[type="range"]{
 </div>
 
 <div class="subtitle">
-Real-time object detection
+Real-time mobile object intelligence
 </div>
 
 </header>
@@ -355,28 +342,33 @@ Real-time object detection
 
 <!-- STATUS -->
 
-<div class="statusBar">
+<div class="status">
 
 <div class="statusLeft">
 
-<div id="statusDot" class="dot"></div>
+<div
+id="statusDot"
+class="statusDot">
+</div>
 
 <span id="status">
-Loading AI model...
+Loading AI...
 </span>
 
 </div>
 
-<div id="fps">
+<span id="fps">
 0 FPS
-</div>
+</span>
 
 </div>
 
 
 <!-- CAMERA -->
 
-<div id="cameraBox" class="cameraBox">
+<div
+id="cameraBox"
+class="camera">
 
 <video
 id="camera"
@@ -384,9 +376,11 @@ autoplay
 playsinline>
 </video>
 
-<canvas id="canvas"></canvas>
+<canvas
+id="canvas">
+</canvas>
 
-<div class="scanLine"></div>
+<div class="scan"></div>
 
 </div>
 
@@ -398,25 +392,36 @@ playsinline>
 <button
 class="start"
 onclick="startCamera()">
-📷 START CAMERA
+
+📷 START AI
+
 </button>
+
 
 <button
 class="stop"
 onclick="stopCamera()">
+
 ⛔ STOP
+
 </button>
+
 
 <button
 id="voiceButton"
 class="voiceOn"
 onclick="toggleVoice()">
+
 🔊 VOICE ON
+
 </button>
+
 
 <button
 onclick="switchCamera()">
+
 🔄 SWITCH CAMERA
+
 </button>
 
 </div>
@@ -424,14 +429,14 @@ onclick="switchCamera()">
 
 <!-- RESULT -->
 
-<div class="mainResult">
+<div class="result">
 
-<div class="resultTitle">
-Primary Detection
+<div class="smallTitle">
+Main Detection
 </div>
 
 <div id="result">
-Waiting for camera...
+AI is loading...
 </div>
 
 </div>
@@ -443,7 +448,7 @@ Waiting for camera...
 
 <div class="stat">
 
-<div class="statName">
+<div class="statLabel">
 OBJECTS
 </div>
 
@@ -458,7 +463,7 @@ class="statValue">
 
 <div class="stat">
 
-<div class="statName">
+<div class="statLabel">
 CONFIDENCE
 </div>
 
@@ -473,7 +478,7 @@ class="statValue">
 
 <div class="stat">
 
-<div class="statName">
+<div class="statLabel">
 FPS
 </div>
 
@@ -488,16 +493,16 @@ class="statValue">
 </div>
 
 
-<!-- OBJECT LIST -->
+<!-- OBJECT PANEL -->
 
-<div class="objectsPanel">
+<div class="panel">
 
 <div class="panelTitle">
-🔎 Detected Objects
+🔎 What I See
 </div>
 
 <div id="objects">
-No objects detected
+Waiting for camera...
 </div>
 
 </div>
@@ -505,24 +510,26 @@ No objects detected
 
 <!-- SETTINGS -->
 
-<div class="settings">
+<div class="panel">
 
 <div class="panelTitle">
-⚙️ AI Settings
+⚙️ AI SETTINGS
 </div>
 
 
 <div class="setting">
 
-<label>
+<div class="settingLabel">
 
-<span>Detection Confidence</span>
+<span>
+Detection confidence
+</span>
 
 <span id="confidenceValue">
 50%
 </span>
 
-</label>
+</div>
 
 <input
 id="confidenceSlider"
@@ -538,9 +545,13 @@ oninput="updateConfidence()">
 
 <div class="setting">
 
-<label>
-<span>Voice</span>
-</label>
+<div class="settingLabel">
+
+<span>
+AI Voice
+</span>
+
+</div>
 
 <select id="voiceSelect">
 <option>Loading voices...</option>
@@ -551,21 +562,23 @@ oninput="updateConfidence()">
 
 <div class="setting">
 
-<label>
+<div class="settingLabel">
 
-<span>Voice Speed</span>
+<span>
+Voice speed
+</span>
 
 <span id="speedValue">
 1.0
 </span>
 
-</label>
+</div>
 
 <input
 id="speedSlider"
 type="range"
-min="0.5"
-max="1.5"
+min="0.6"
+max="1.4"
 value="1"
 step="0.1"
 oninput="updateSpeed()">
@@ -579,14 +592,15 @@ oninput="updateSpeed()">
 VISION AI • TensorFlow.js • COCO-SSD
 </div>
 
+
 </div>
 
 
 <script>
 
-/* ==========================================
+/* ==================================================
 VARIABLES
-========================================== */
+================================================== */
 
 let model = null;
 
@@ -594,28 +608,30 @@ let cameraRunning = false;
 
 let currentStream = null;
 
-let usingFrontCamera = false;
+let frontCamera = false;
 
 let voiceEnabled = true;
+
+let voiceUnlocked = false;
 
 let confidenceThreshold = 0.50;
 
 let voiceSpeed = 1;
 
-let lastSpokenObjects = new Map();
-
 let detectionBusy = false;
 
-let frameCounter = 0;
+let lastSpoken = new Map();
+
+let fpsCounter = 0;
 
 let fps = 0;
 
-let fpsStart = Date.now();
+let fpsTime = Date.now();
 
 
-/* ==========================================
+/* ==================================================
 ELEMENTS
-========================================== */
+================================================== */
 
 const video =
 document.getElementById("camera");
@@ -660,68 +676,40 @@ const voiceSelect =
 document.getElementById("voiceSelect");
 
 
-/* ==========================================
-LOAD AI
-========================================== */
-
-async function loadAI(){
-
-try{
-
-status.innerText =
-"Loading AI model...";
-
-model =
-await cocoSsd.load({
-base:"lite_mobilenet_v2"
-});
-
-status.innerText =
-"AI READY";
-
-result.innerText =
-"Press START CAMERA";
-
-}
-catch(error){
-
-console.error(error);
-
-status.innerText =
-"AI FAILED";
-
-result.innerText =
-"Could not load AI model";
-
-}
-
-}
-
-
-/* ==========================================
-VOICE SYSTEM
-========================================== */
+/* ==================================================
+VOICE LOADING
+================================================== */
 
 function loadVoices(){
 
-const voices =
-speechSynthesis.getVoices();
+    if(!("speechSynthesis" in window)){
+        voiceSelect.innerHTML =
+        "<option>Voice unavailable</option>";
+        return;
+    }
 
-voiceSelect.innerHTML = "";
+    const voices =
+    speechSynthesis.getVoices();
 
-voices.forEach((voice,index)=>{
+    if(!voices.length){
+        return;
+    }
 
-const option =
-document.createElement("option");
+    voiceSelect.innerHTML = "";
 
-option.value = index;
+    voices.forEach((voice,index)=>{
 
-option.textContent =
-`${voice.name} — ${voice.lang}`;
+        const option =
+        document.createElement("option");
 
-voiceSelect.appendChild(option);
+        option.value = index;
 
-});
+        option.textContent =
+        voice.name + " — " + voice.lang;
+
+        voiceSelect.appendChild(option);
+
+    });
 
 }
 
@@ -731,696 +719,969 @@ loadVoices;
 loadVoices();
 
 
+/* ==================================================
+IMPORTANT MOBILE VOICE UNLOCK
+================================================== */
+
+function unlockVoice(){
+
+    if(!("speechSynthesis" in window)){
+        return false;
+    }
+
+    try{
+
+        speechSynthesis.cancel();
+
+        const test =
+        new SpeechSynthesisUtterance("");
+
+        test.volume = 0;
+
+        speechSynthesis.speak(test);
+
+        voiceUnlocked = true;
+
+        return true;
+
+    }
+    catch(error){
+
+        console.log(
+            "Voice unlock failed",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* ==================================================
+SPEAK
+================================================== */
+
 function speak(text){
 
-if(!voiceEnabled){
-return;
-}
+    if(!voiceEnabled){
+        return;
+    }
 
-if(!("speechSynthesis" in window)){
-console.log("Speech synthesis unavailable");
-return;
-}
+    if(!("speechSynthesis" in window)){
+        return;
+    }
 
-speechSynthesis.cancel();
+    try{
 
-const speech =
-new SpeechSynthesisUtterance(text);
+        speechSynthesis.cancel();
 
-const voices =
-speechSynthesis.getVoices();
+        const voices =
+        speechSynthesis.getVoices();
 
-const selected =
-voices[voiceSelect.value];
+        const utterance =
+        new SpeechSynthesisUtterance(text);
 
-if(selected){
-speech.voice = selected;
-}
+        const selectedIndex =
+        parseInt(voiceSelect.value);
 
-speech.rate =
-voiceSpeed;
+        if(
+            voices[selectedIndex]
+        ){
 
-speech.pitch =
-1;
+            utterance.voice =
+            voices[selectedIndex];
 
-speech.volume =
-1;
+        }
 
-speechSynthesis.speak(speech);
+        utterance.rate =
+        voiceSpeed;
 
-}
+        utterance.pitch =
+        1;
 
+        utterance.volume =
+        1;
 
-/* ==========================================
-CUSTOM VOICE RESPONSE
-========================================== */
+        speechSynthesis.speak(
+            utterance
+        );
 
-function speakObject(name,percent){
+    }
+    catch(error){
 
-const now =
-Date.now();
+        console.log(
+            "Speech error:",
+            error
+        );
 
-const last =
-lastSpokenObjects.get(name) || 0;
-
-
-/* 5 second cooldown */
-
-if(now-last < 5000){
-return;
-}
-
-lastSpokenObjects.set(name,now);
-
-
-let message =
-"I can see a " + name;
-
-
-/* Special responses */
-
-if(name === "person"){
-
-message =
-"I can see a person";
-
-}
-
-else if(name === "cell phone"){
-
-message =
-"I can see a mobile phone";
-
-}
-
-else if(name === "laptop"){
-
-message =
-"I can see a laptop";
-
-}
-
-else if(name === "bottle"){
-
-message =
-"I can see a bottle";
-
-}
-
-else if(name === "chair"){
-
-message =
-"I can see a chair";
-
-}
-
-else if(name === "car"){
-
-message =
-"I can see a car";
+    }
 
 }
 
 
-speak(
-message +
-". Confidence " +
-percent +
-" percent."
-);
-
-}
-
-
-/* ==========================================
+/* ==================================================
 VOICE TOGGLE
-========================================== */
+================================================== */
 
 function toggleVoice(){
 
-voiceEnabled =
-!voiceEnabled;
+    voiceEnabled =
+    !voiceEnabled;
 
-if(voiceEnabled){
+    if(voiceEnabled){
 
-voiceButton.innerText =
-"🔊 VOICE ON";
+        voiceButton.innerText =
+        "🔊 VOICE ON";
 
-voiceButton.className =
-"voiceOn";
+        voiceButton.className =
+        "voiceOn";
 
-speak("Voice activated");
+        unlockVoice();
+
+        speak(
+            "Voice activated"
+        );
+
+    }
+    else{
+
+        voiceButton.innerText =
+        "🔇 VOICE OFF";
+
+        voiceButton.className =
+        "voiceOff";
+
+        if(
+            "speechSynthesis"
+            in window
+        ){
+
+            speechSynthesis.cancel();
+
+        }
+
+    }
 
 }
-else{
 
-voiceButton.innerText =
-"🔇 VOICE OFF";
 
-voiceButton.className =
-"voiceOff";
+/* ==================================================
+AI LOADING
+================================================== */
 
-speechSynthesis.cancel();
+async function loadAI(){
+
+    try{
+
+        status.innerText =
+        "⚡ Starting AI engine...";
+
+        result.innerText =
+        "Initializing TensorFlow...";
+
+
+        if(
+            typeof tf === "undefined"
+        ){
+
+            throw new Error(
+                "TensorFlow failed to load"
+            );
+
+        }
+
+
+        /* Wait for TensorFlow */
+
+        await tf.ready();
+
+
+        status.innerText =
+        "🧠 Downloading AI model...";
+
+        result.innerText =
+        "Downloading object detector...";
+
+
+        /* Load smaller mobile model */
+
+        model =
+        await cocoSsd.load({
+            base:"lite_mobilenet_v2"
+        });
+
+
+        status.innerText =
+        "✅ AI READY";
+
+        result.innerText =
+        "📷 Press START AI";
+
+        console.log(
+            "VISION AI READY"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "AI LOAD ERROR:",
+            error
+        );
+
+        status.innerText =
+        "❌ AI FAILED";
+
+        result.innerText =
+        "AI could not load";
+
+        objects.innerHTML =
+        `
+        <b>Loading error</b><br>
+        ${error.message}
+        `;
+
+    }
 
 }
 
-}
 
-
-/* ==========================================
+/* ==================================================
 START CAMERA
-========================================== */
+================================================== */
 
 async function startCamera(){
 
-if(!model){
+    /* 🔊 IMPORTANT:
+       This function is called directly
+       from a button click.
+       That makes mobile browsers much
+       more likely to allow speech.
+    */
 
-result.innerText =
-"AI is still loading...";
+    if(voiceEnabled){
 
-return;
+        unlockVoice();
+
+        speak(
+            "Vision AI activated"
+        );
+
+    }
+
+
+    if(!model){
+
+        result.innerText =
+        "⏳ AI is still loading...";
+
+        return;
+
+    }
+
+
+    try{
+
+        if(currentStream){
+
+            currentStream
+            .getTracks()
+            .forEach(
+                track=>track.stop()
+            );
+
+        }
+
+
+        const constraints = {
+
+            video:{
+
+                facingMode:
+                frontCamera
+                ? "user"
+                : "environment",
+
+                width:{
+                    ideal:1280
+                },
+
+                height:{
+                    ideal:720
+                }
+
+            },
+
+            audio:false
+
+        };
+
+
+        currentStream =
+        await navigator
+        .mediaDevices
+        .getUserMedia(
+            constraints
+        );
+
+
+        video.srcObject =
+        currentStream;
+
+
+        cameraRunning =
+        true;
+
+
+        status.innerText =
+        "🟢 CAMERA ACTIVE";
+
+        statusDot.classList.add(
+            "active"
+        );
+
+        cameraBox.classList.add(
+            "scanning"
+        );
+
+
+        result.innerText =
+        "🔍 Scanning...";
+
+
+        detectObjects();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        status.innerText =
+        "❌ CAMERA ERROR";
+
+        result.innerText =
+        error.message;
+
+    }
 
 }
 
 
-/* IMPORTANT:
-This click unlocks speech on browsers */
-
-if(voiceEnabled){
-
-speak("Vision AI activated");
-
-}
-
-
-try{
-
-if(currentStream){
-
-currentStream
-.getTracks()
-.forEach(track=>track.stop());
-
-}
-
-
-const constraints = {
-
-video:{
-
-facingMode:
-usingFrontCamera
-? "user"
-: "environment",
-
-width:{
-ideal:1280
-},
-
-height:{
-ideal:720
-}
-
-},
-
-audio:false
-
-};
-
-
-currentStream =
-await navigator
-.mediaDevices
-.getUserMedia(constraints);
-
-
-video.srcObject =
-currentStream;
-
-cameraRunning =
-true;
-
-status.innerText =
-"CAMERA ACTIVE";
-
-statusDot.classList.add("active");
-
-cameraBox.classList.add("scanning");
-
-result.innerText =
-"Scanning environment...";
-
-detectObjects();
-
-}
-catch(error){
-
-console.error(error);
-
-status.innerText =
-"CAMERA ERROR";
-
-result.innerText =
-error.message;
-
-}
-
-}
-
-
-/* ==========================================
+/* ==================================================
 SWITCH CAMERA
-========================================== */
+================================================== */
 
 async function switchCamera(){
 
-usingFrontCamera =
-!usingFrontCamera;
+    frontCamera =
+    !frontCamera;
 
-if(cameraRunning){
+    if(cameraRunning){
 
-stopCamera();
+        stopCamera();
 
-await startCamera();
+        await startCamera();
+
+    }
 
 }
 
-}
 
-
-/* ==========================================
-STOP CAMERA
-========================================== */
+/* ==================================================
+STOP
+================================================== */
 
 function stopCamera(){
 
-cameraRunning =
-false;
+    cameraRunning =
+    false;
 
-detectionBusy =
-false;
+    detectionBusy =
+    false;
 
-cameraBox.classList.remove("scanning");
+    cameraBox.classList.remove(
+        "scanning"
+    );
 
-if(currentStream){
 
-currentStream
-.getTracks()
-.forEach(track=>track.stop());
+    if(currentStream){
 
-currentStream =
-null;
+        currentStream
+        .getTracks()
+        .forEach(
+            track=>track.stop()
+        );
+
+        currentStream =
+        null;
+
+    }
+
+
+    video.srcObject =
+    null;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if(
+        "speechSynthesis"
+        in window
+    ){
+
+        speechSynthesis.cancel();
+
+    }
+
+
+    status.innerText =
+    "⛔ CAMERA STOPPED";
+
+    statusDot.classList.remove(
+        "active"
+    );
+
+    result.innerText =
+    "📷 Press START AI";
+
+    objects.innerText =
+    "No objects detected";
+
+    objectCount.innerText =
+    "0";
+
+    confidence.innerText =
+    "0%";
 
 }
 
-video.srcObject =
-null;
 
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+/* ==================================================
+OBJECT VOICE
+================================================== */
 
-status.innerText =
-"CAMERA STOPPED";
+function speakObject(
+    name,
+    percent
+){
 
-statusDot.classList.remove("active");
+    if(!voiceEnabled){
+        return;
+    }
 
-result.innerText =
-"Press START CAMERA";
 
-objects.innerText =
-"No objects detected";
+    const now =
+    Date.now();
 
-objectCount.innerText =
-"0";
+    const previous =
+    lastSpoken.get(name) || 0;
 
-confidence.innerText =
-"0%";
+
+    /* Don't repeat same object
+       for 5 seconds */
+
+    if(
+        now - previous < 5000
+    ){
+
+        return;
+
+    }
+
+
+    lastSpoken.set(
+        name,
+        now
+    );
+
+
+    let text;
+
+
+    switch(name){
+
+        case "person":
+
+            text =
+            "I can see a person.";
+
+            break;
+
+
+        case "cell phone":
+
+            text =
+            "I can see a mobile phone.";
+
+            break;
+
+
+        case "laptop":
+
+            text =
+            "I can see a laptop.";
+
+            break;
+
+
+        case "bottle":
+
+            text =
+            "I can see a bottle.";
+
+            break;
+
+
+        case "chair":
+
+            text =
+            "I can see a chair.";
+
+            break;
+
+
+        case "car":
+
+            text =
+            "I can see a car.";
+
+            break;
+
+
+        case "dog":
+
+            text =
+            "I can see a dog.";
+
+            break;
+
+
+        case "cat":
+
+            text =
+            "I can see a cat.";
+
+            break;
+
+
+        case "backpack":
+
+            text =
+            "I can see a backpack.";
+
+            break;
+
+
+        default:
+
+            text =
+            "I can see a " +
+            name + ".";
+
+    }
+
+
+    speak(
+        text +
+        " Confidence " +
+        percent +
+        " percent."
+    );
 
 }
 
 
-/* ==========================================
-DETECTION
-========================================== */
+/* ==================================================
+DETECTION LOOP
+================================================== */
 
 async function detectObjects(){
 
-if(!cameraRunning ||
-!model ||
-detectionBusy){
+    if(
+        !cameraRunning ||
+        !model
+    ){
 
-if(cameraRunning){
+        return;
 
-setTimeout(
-detectObjects,
-250
-);
+    }
+
+
+    if(detectionBusy){
+
+        setTimeout(
+            detectObjects,
+            250
+        );
+
+        return;
+
+    }
+
+
+    if(
+        video.readyState <
+        video.HAVE_ENOUGH_DATA
+    ){
+
+        setTimeout(
+            detectObjects,
+            250
+        );
+
+        return;
+
+    }
+
+
+    detectionBusy =
+    true;
+
+
+    try{
+
+        canvas.width =
+        video.videoWidth;
+
+        canvas.height =
+        video.videoHeight;
+
+
+        const predictions =
+        await model.detect(
+            video
+        );
+
+
+        const filtered =
+        predictions
+        .filter(
+            item =>
+            item.score >=
+            confidenceThreshold
+        )
+        .sort(
+            (a,b)=>
+            b.score-a.score
+        );
+
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        /* FPS */
+
+        fpsCounter++;
+
+        const now =
+        Date.now();
+
+        if(
+            now-fpsTime >= 1000
+        ){
+
+            fps =
+            fpsCounter;
+
+            fpsCounter =
+            0;
+
+            fpsTime =
+            now;
+
+            fpsText.innerText =
+            fps + " FPS";
+
+            fpsBig.innerText =
+            fps;
+
+        }
+
+
+        /* NOTHING */
+
+        if(
+            filtered.length === 0
+        ){
+
+            result.innerText =
+            "👀 Nothing confidently detected";
+
+            objectCount.innerText =
+            "0";
+
+            confidence.innerText =
+            "0%";
+
+            objects.innerText =
+            "No confident objects";
+
+        }
+
+
+        /* OBJECTS */
+
+        else{
+
+            const best =
+            filtered[0];
+
+            const percent =
+            Math.round(
+                best.score*100
+            );
+
+
+            result.innerText =
+            "🎯 " +
+            best.class.toUpperCase() +
+            " • " +
+            percent +
+            "%";
+
+
+            objectCount.innerText =
+            filtered.length;
+
+            confidence.innerText =
+            percent + "%";
+
+
+            speakObject(
+                best.class,
+                percent
+            );
+
+
+            objects.innerHTML =
+            filtered
+            .map(item=>{
+
+                const p =
+                Math.round(
+                    item.score*100
+                );
+
+                return `
+
+                <div class="object">
+
+                    <div class="objectTop">
+
+                        <span>
+                            ${item.class}
+                        </span>
+
+                        <span>
+                            ${p}%
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                        class="fill"
+                        style="width:${p}%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            })
+            .join("");
+
+
+            drawBoxes(
+                filtered
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Detection error:",
+            error
+        );
+
+    }
+
+
+    detectionBusy =
+    false;
+
+
+    if(cameraRunning){
+
+        setTimeout(
+            detectObjects,
+            180
+        );
+
+    }
 
 }
 
-return;
 
-}
-
-
-if(video.readyState <
-video.HAVE_ENOUGH_DATA){
-
-setTimeout(
-detectObjects,
-200
-);
-
-return;
-
-}
-
-
-detectionBusy =
-true;
-
-
-try{
-
-canvas.width =
-video.videoWidth;
-
-canvas.height =
-video.videoHeight;
-
-
-/* AI detection */
-
-const predictions =
-await model.detect(video);
-
-
-/* Confidence filtering */
-
-const filtered =
-predictions
-.filter(item =>
-item.score >= confidenceThreshold
-);
-
-
-/* Sort strongest first */
-
-filtered.sort(
-(a,b)=>
-b.score-a.score
-);
-
-
-/* Clear old boxes */
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-
-/* FPS */
-
-frameCounter++;
-
-const now =
-Date.now();
-
-if(now-fpsStart >= 1000){
-
-fps =
-frameCounter;
-
-frameCounter = 0;
-
-fpsStart =
-now;
-
-fpsText.innerText =
-fps + " FPS";
-
-fpsBig.innerText =
-fps;
-
-}
-
-
-/* Nothing */
-
-if(filtered.length === 0){
-
-result.innerText =
-"👀 No confident object detected";
-
-objectCount.innerText =
-"0";
-
-confidence.innerText =
-"0%";
-
-objects.innerText =
-"No objects detected";
-
-}
-
-
-/* Objects */
-
-else{
-
-const best =
-filtered[0];
-
-const bestPercent =
-Math.round(
-best.score * 100
-);
-
-
-result.innerText =
-`🎯 ${best.class.toUpperCase()} • ${bestPercent}%`;
-
-objectCount.innerText =
-filtered.length;
-
-confidence.innerText =
-bestPercent + "%";
-
-
-/* Voice */
-
-speakObject(
-best.class,
-bestPercent
-);
-
-
-/* Object list */
-
-objects.innerHTML =
-filtered.map(item=>{
-
-const percent =
-Math.round(
-item.score*100
-);
-
-return `
-
-<div class="object">
-
-<div class="objectTop">
-
-<span>
-${item.class}
-</span>
-
-<span>
-${percent}%
-</span>
-
-</div>
-
-<div class="bar">
-
-<div
-class="barFill"
-style="width:${percent}%">
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-
-/* Draw */
-
-drawBoxes(filtered);
-
-}
-
-}
-catch(error){
-
-console.error(error);
-
-}
-
-finally{
-
-detectionBusy =
-false;
-
-if(cameraRunning){
-
-setTimeout(
-detectObjects,
-180
-);
-
-}
-
-}
-
-}
-
-
-/* ==========================================
+/* ==================================================
 DRAW BOXES
-========================================== */
+================================================== */
 
-function drawBoxes(predictions){
+function drawBoxes(
+    predictions
+){
 
-ctx.lineWidth =
-4;
+    ctx.lineWidth =
+    4;
 
-ctx.font =
-"bold 17px Arial";
-
-predictions.forEach(item=>{
-
-const [
-x,
-y,
-width,
-height
-] =
-item.bbox;
+    ctx.font =
+    "bold 17px Arial";
 
 
-const percent =
-Math.round(
-item.score*100
-);
+    predictions.forEach(
+        item=>{
 
-const label =
-`${item.class} ${percent}%`;
-
-
-/* Box */
-
-ctx.strokeStyle =
-"#00ff9d";
-
-ctx.strokeRect(
-x,
-y,
-width,
-height
-);
+            const [
+                x,
+                y,
+                width,
+                height
+            ] =
+            item.bbox;
 
 
-/* Label */
-
-const textWidth =
-ctx.measureText(label).width;
-
-const labelY =
-Math.max(
-30,
-y
-);
-
-ctx.fillStyle =
-"#00ff9d";
-
-ctx.fillRect(
-x,
-labelY-30,
-textWidth+16,
-30
-);
+            const percent =
+            Math.round(
+                item.score*100
+            );
 
 
-/* Text */
+            const label =
+            item.class +
+            " " +
+            percent +
+            "%";
 
-ctx.fillStyle =
-"#00150e";
 
-ctx.fillText(
-label,
-x+8,
-labelY-9
-);
+            /* Box */
 
-});
+            ctx.strokeStyle =
+            "#00ff9d";
+
+            ctx.strokeRect(
+                x,
+                y,
+                width,
+                height
+            );
+
+
+            /* Label */
+
+            const textWidth =
+            ctx.measureText(
+                label
+            ).width;
+
+
+            const labelY =
+            Math.max(
+                30,
+                y
+            );
+
+
+            ctx.fillStyle =
+            "#00ff9d";
+
+
+            ctx.fillRect(
+                x,
+                labelY-30,
+                textWidth+16,
+                30
+            );
+
+
+            ctx.fillStyle =
+            "#00150d";
+
+
+            ctx.fillText(
+                label,
+                x+8,
+                labelY-9
+            );
+
+        }
+    );
 
 }
 
 
-/* ==========================================
+/* ==================================================
 SETTINGS
-========================================== */
+================================================== */
 
 function updateConfidence(){
 
-const value =
-document.getElementById(
-"confidenceSlider"
-).value;
+    const value =
+    document.getElementById(
+        "confidenceSlider"
+    ).value;
 
-confidenceThreshold =
-value/100;
 
-document.getElementById(
-"confidenceValue"
-).innerText =
-value + "%";
+    confidenceThreshold =
+    value/100;
+
+
+    document.getElementById(
+        "confidenceValue"
+    ).innerText =
+    value + "%";
 
 }
 
 
 function updateSpeed(){
 
-voiceSpeed =
-parseFloat(
-document.getElementById(
-"speedSlider"
-).value
-);
+    voiceSpeed =
+    parseFloat(
+        document.getElementById(
+            "speedSlider"
+        ).value
+    );
 
-document.getElementById(
-"speedValue"
-).innerText =
-voiceSpeed.toFixed(1);
+
+    document.getElementById(
+        "speedValue"
+    ).innerText =
+    voiceSpeed.toFixed(1);
 
 }
 
 
-/* ==========================================
-START
-========================================== */
+/* ==================================================
+START AI LOADING
+================================================== */
 
 loadAI();
 
