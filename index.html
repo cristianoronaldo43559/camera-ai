@@ -2,741 +2,114 @@
 <html lang="en">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
-
-<title>VISION AI</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
-
-
-<style>
-
-/* ==============================
-   BASE
-================================ */
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-
-    margin:0;
-
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at 50% -20%,
-            #123b2d,
-            #07100d 38%,
-            #030504 80%
-        );
-
-    color:white;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    overflow-x:hidden;
-}
-
-
-/* ==============================
-   HEADER
-================================ */
-
-.header{
-
-    height:72px;
-
-    padding:12px 16px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-}
-
-.logoArea{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:11px;
-}
-
-.logo{
-
-    width:42px;
-    height:42px;
-
-    border-radius:14px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00ff9d,
-            #00875e
-        );
-
-    color:#03120d;
-
-    font-size:21px;
-
-    font-weight:bold;
-
-    box-shadow:
-        0 0 25px
-        rgba(0,255,157,.22);
-}
-
-.title{
-
-    text-align:left;
-}
-
-.title h1{
-
-    margin:0;
-
-    font-size:17px;
-
-    letter-spacing:2px;
-}
-
-.title p{
-
-    margin:3px 0 0;
-
-    font-size:9px;
-
-    color:#71837c;
-
-    letter-spacing:1.5px;
-}
-
-.online{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:6px;
-
-    padding:8px 11px;
-
-    border-radius:20px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    color:#8b9e97;
-
-    font-size:9px;
-
-    letter-spacing:1px;
-}
-
-.onlineDot{
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#00ff9d;
-
-    box-shadow:
-        0 0 10px #00ff9d;
-
-}
-
-
-/* ==============================
-   STATUS
-================================ */
-
-.status{
-
-    text-align:center;
-
-    height:30px;
-
-    font-size:11px;
-
-    color:#71817b;
-
-    letter-spacing:1px;
-}
-
-
-/* ==============================
-   CAMERA
-================================ */
-
-.cameraContainer{
-
-    width:100%;
-
-    padding:
-        0 12px;
-
-    display:flex;
-
-    justify-content:center;
-}
-
-.cameraBox{
-
-    position:relative;
-
-    width:100%;
-
-    max-width:700px;
-
-    aspect-ratio:3 / 4;
-
-    background:#000;
-
-    border-radius:27px;
-
-    overflow:hidden;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    box-shadow:
-        0 20px 70px
-        rgba(0,0,0,.5);
-}
-
-
-/* ==============================
-   VIDEO
-================================ */
-
-video{
-
-    width:100%;
-    height:100%;
-
-    display:block;
-
-    object-fit:cover;
-}
-
-
-/* ==============================
-   CANVAS
-================================ */
-
-canvas{
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
-
-    pointer-events:none;
-}
-
-
-/* ==============================
-   CAMERA CORNERS
-================================ */
-
-.corner{
-
-    position:absolute;
-
-    width:25px;
-    height:25px;
-
-    border-color:#00ff9d;
-
-    border-style:solid;
-
-    z-index:5;
-
-    opacity:.85;
-}
-
-.topLeft{
-
-    top:15px;
-    left:15px;
-
-    border-width:
-        2px 0 0 2px;
-}
-
-.topRight{
-
-    top:15px;
-    right:15px;
-
-    border-width:
-        2px 2px 0 0;
-}
-
-.bottomLeft{
-
-    bottom:15px;
-    left:15px;
-
-    border-width:
-        0 0 2px 2px;
-}
-
-.bottomRight{
-
-    bottom:15px;
-    right:15px;
-
-    border-width:
-        0 2px 2px 0;
-}
-
-
-/* ==============================
-   CAMERA MODE
-================================ */
-
-.cameraMode{
-
-    position:absolute;
-
-    top:17px;
-    left:50%;
-
-    transform:
-        translateX(-50%);
-
-    z-index:6;
-
-    padding:
-        8px 13px;
-
-    border-radius:20px;
-
-    background:
-        rgba(0,0,0,.5);
-
-    backdrop-filter:
-        blur(10px);
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    color:#b4c4be;
-
-    font-size:9px;
-
-    letter-spacing:1.5px;
-}
-
-
-/* ==============================
-   SCAN LINE
-================================ */
-
-.scanLine{
-
-    position:absolute;
-
-    left:7%;
-    right:7%;
-
-    height:2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #00ff9d,
-            transparent
-        );
-
-    box-shadow:
-        0 0 12px
-        rgba(0,255,157,.8);
-
-    opacity:.5;
-
-    animation:
-        scan 3s
-        ease-in-out
-        infinite;
-
-    pointer-events:none;
-
-    z-index:3;
-}
-
-@keyframes scan{
-
-    0%{
-
-        top:8%;
-
-        opacity:0;
-    }
-
-    15%{
-
-        opacity:.6;
-    }
-
-    85%{
-
-        opacity:.6;
-    }
-
-    100%{
-
-        top:92%;
-
-        opacity:0;
-    }
-}
-
-
-/* ==============================
-   RESULT
-================================ */
-
-.resultPanel{
-
-    position:absolute;
-
-    left:15px;
-    right:15px;
-    bottom:15px;
-
-    z-index:8;
-
-    padding:14px 16px;
-
-    border-radius:18px;
-
-    background:
-        rgba(5,10,8,.75);
-
-    backdrop-filter:
-        blur(16px);
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    text-align:left;
-}
-
-.resultHeader{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    margin-bottom:5px;
-}
-
-.resultLabel{
-
-    font-size:8px;
-
-    color:#71817b;
-
-    letter-spacing:1.8px;
-
-    text-transform:uppercase;
-}
-
-.confidence{
-
-    color:#00ff9d;
-
-    font-size:11px;
-
-    font-weight:bold;
-}
-
-#result{
-
-    font-size:23px;
-
-    font-weight:bold;
-}
-
-#objects{
-
-    margin-top:4px;
-
-    color:#82918c;
-
-    font-size:10px;
-
-}
-
-
-/* ==============================
-   CONTROLS
-================================ */
-
-.controls{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:10px;
-
-    padding:
-        15px 14px 10px;
-}
-
-
-/* ==============================
-   BUTTONS
-================================ */
-
-button{
-
-    border:none;
-
-    cursor:pointer;
-
-    color:white;
-
-    -webkit-tap-highlight-color:
-        transparent;
-
-    transition:
-        transform .12s;
-}
-
-button:active{
-
-    transform:scale(.93);
-}
-
-
-/* START */
-
-.startButton{
-
-    flex:1;
-
-    max-width:250px;
-
-    height:53px;
-
-    border-radius:17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00dc8a,
-            #009965
-        );
-
-    box-shadow:
-        0 8px 25px
-        rgba(0,255,157,.16);
-
-    font-size:14px;
-
-    font-weight:bold;
-
-    letter-spacing:.5px;
-}
-
-
-/* ICON */
-
-.iconButton{
-
-    width:53px;
-    height:53px;
-
-    border-radius:17px;
-
-    background:
-        rgba(255,255,255,.06);
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    font-size:20px;
-
-    backdrop-filter:
-        blur(10px);
-}
-
-.stopButton{
-
-    color:#ff7777;
-}
-
-
-/* ==============================
-   FOOTER
-================================ */
-
-.footer{
-
-    text-align:center;
-
-    padding:
-        2px 0 15px;
-
-    color:#4f5d58;
-
-    font-size:8px;
-
-    letter-spacing:1.5px;
-}
-
-
-/* ==============================
-   DESKTOP
-================================ */
-
-@media(min-width:700px){
-
-    .cameraBox{
-
-        aspect-ratio:16 / 10;
-
-        max-height:
-            calc(100vh - 160px);
-    }
-
-}
-
-
-/* ==============================
-   SMALL PHONE
-================================ */
-
-@media(max-height:650px){
-
-    .header{
-
-        height:60px;
-    }
-
-    .cameraBox{
-
-        border-radius:21px;
-    }
-
-    .controls{
-
-        padding-top:10px;
-    }
-
-}
-
-</style>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Camera AI</title>
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+    <!-- COCO-SSD Object Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        #status {
+            margin: 15px;
+            font-size: 18px;
+        }
+
+        .cameraBox {
+            position: relative;
+            width: 95%;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background: black;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        button {
+            margin: 15px 5px;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 600px;
+            background: #222;
+            border-radius: 15px;
+            font-size: 22px;
+        }
+
+        #objects {
+            margin-top: 10px;
+            font-size: 17px;
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
+    <h1>🤖 Camera AI</h1>
 
-<!-- ==============================
-     HEADER
-================================ -->
-
-<header class="header">
-
-    <div class="logoArea">
-
-        <div class="logo">
-            ◉
-        </div>
-
-        <div class="title">
-
-            <h1>
-                VISION AI
-            </h1>
-
-            <p>
-                OBJECT RECOGNITION
-            </p>
-
-        </div>
-
+    <div id="status">
+        🧠 Loading AI model...
     </div>
 
 
-    <div class="online">
+    <button onclick="startCamera()">
+        📷 Start Camera
+    </button>
 
-        <span class="onlineDot"></span>
+    <button onclick="stopCamera()">
+        ⛔ Stop
+    </button>
 
-        AI ONLINE
-
-    </div>
-
-</header>
-
-
-<!-- ==============================
-     STATUS
-================================ -->
-
-<div
-    id="status"
-    class="status">
-
-    🧠 Loading AI model...
-
-</div>
-
-
-<!-- ==============================
-     CAMERA
-================================ -->
-
-<div class="cameraContainer">
 
     <div class="cameraBox">
-
 
         <video
             id="camera"
@@ -744,723 +117,167 @@ button:active{
             playsinline>
         </video>
 
-
-        <canvas
-            id="canvas">
-        </canvas>
-
-
-        <div class="scanLine"></div>
-
-
-        <div class="corner topLeft"></div>
-
-        <div class="corner topRight"></div>
-
-        <div class="corner bottomLeft"></div>
-
-        <div class="corner bottomRight"></div>
-
-
-        <div
-            id="cameraMode"
-            class="cameraMode">
-
-            BACK CAMERA
-
-        </div>
-
-
-        <div class="resultPanel">
-
-            <div class="resultHeader">
-
-                <div class="resultLabel">
-                    AI DETECTION
-                </div>
-
-                <div
-                    id="confidence"
-                    class="confidence">
-                </div>
-
-            </div>
-
-
-            <div id="result">
-
-                Waiting...
-
-            </div>
-
-
-            <div id="objects">
-
-                Start the camera to scan objects
-
-            </div>
-
-        </div>
-
+        <canvas id="canvas"></canvas>
 
     </div>
 
-</div>
 
+    <div id="result">
+        Waiting for camera...
+    </div>
 
-<!-- ==============================
-     CONTROLS
-================================ -->
-
-<div class="controls">
-
-
-    <button
-        class="iconButton stopButton"
-        onclick="stopCamera()">
-
-        ■
-
-    </button>
-
-
-    <button
-        class="startButton"
-        onclick="startCamera()">
-
-        📷 START SCANNING
-
-    </button>
-
-
-    <button
-        class="iconButton"
-        onclick="switchCamera()">
-
-        🔄
-
-    </button>
-
-
-</div>
-
-
-<div class="footer">
-
-    POWERED BY COCO-SSD
-
-</div>
+    <div id="objects"></div>
 
 
 <script>
 
+    let model = null;
 
-/* =================================
-   VARIABLES
-================================= */
+    let cameraRunning = false;
 
-let model = null;
+    const video =
+        document.getElementById("camera");
 
-let cameraRunning = false;
+    const canvas =
+        document.getElementById("canvas");
 
-let currentCamera = "environment";
+    const ctx =
+        canvas.getContext("2d");
 
-let lastSpokenObject = "";
+    const status =
+        document.getElementById("status");
 
-let lastSpokenTime = 0;
+    const result =
+        document.getElementById("result");
 
+    const objects =
+        document.getElementById("objects");
 
-const video =
-    document.getElementById("camera");
 
-const canvas =
-    document.getElementById("canvas");
+    // =====================================
+    // LOAD AI
+    // =====================================
 
-const ctx =
-    canvas.getContext("2d");
+    async function loadAI() {
 
-const status =
-    document.getElementById("status");
-
-const result =
-    document.getElementById("result");
-
-const objects =
-    document.getElementById("objects");
-
-const confidence =
-    document.getElementById("confidence");
-
-const cameraMode =
-    document.getElementById("cameraMode");
-
-
-/* =================================
-   LOAD AI
-================================= */
-
-async function loadAI(){
-
-    try{
-
-        status.innerText =
-            "🧠 Loading AI model...";
-
-
-        /*
-         * THIS IS THE ORIGINAL MODEL
-         *
-         * Do NOT change this to:
-         * lite_mobilenet_v2
-         */
-
-        model =
-            await cocoSsd.load();
-
-
-        status.innerText =
-            "🟢 AI READY";
-
-
-        result.innerText =
-            "Ready";
-
-        objects.innerText =
-            "Press START SCANNING";
-
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-
-        status.innerText =
-            "🔴 AI FAILED";
-
-
-        result.innerText =
-            "AI could not load";
-
-        objects.innerText =
-            error.message;
-
-    }
-
-}
-
-
-/* =================================
-   START CAMERA
-================================= */
-
-async function startCamera(){
-
-    if(!model){
-
-        result.innerText =
-            "AI is still loading...";
-
-        return;
-
-    }
-
-
-    try{
-
-        /*
-         * Stop previous camera
-         */
-
-        if(video.srcObject){
-
-            video.srcObject
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-
-        }
-
-
-        /*
-         * Start camera
-         */
-
-        const stream =
-            await navigator
-                .mediaDevices
-                .getUserMedia({
-
-                    video:{
-                        facingMode:{
-                            ideal:
-                                currentCamera
-                        },
-
-                        width:{
-                            ideal:1280
-                        },
-
-                        height:{
-                            ideal:720
-                        }
-                    },
-
-                    audio:false
-
-                });
-
-
-        video.srcObject =
-            stream;
-
-
-        cameraRunning =
-            true;
-
-
-        updateCameraUI();
-
-
-        result.innerText =
-            "Scanning...";
-
-
-        objects.innerText =
-            "Looking for objects";
-
-
-        detectObjects();
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-
-        status.innerText =
-            "🔴 CAMERA ERROR";
-
-
-        result.innerText =
-            error.name;
-
-        objects.innerText =
-            error.message;
-
-    }
-
-}
-
-
-/* =================================
-   SWITCH CAMERA
-================================= */
-
-async function switchCamera(){
-
-    /*
-     * Toggle
-     */
-
-    if(
-        currentCamera ===
-        "environment"
-    ){
-
-        currentCamera =
-            "user";
-
-    }
-
-    else{
-
-        currentCamera =
-            "environment";
-
-    }
-
-
-    updateCameraUI();
-
-
-    /*
-     * Camera isn't running?
-     * Just remember selection.
-     */
-
-    if(!cameraRunning){
-
-        status.innerText =
-            currentCamera ===
-            "environment"
-                ? "📱 Back camera selected"
-                : "🤳 Front camera selected";
-
-        return;
-
-    }
-
-
-    /*
-     * Stop current stream
-     */
-
-    if(video.srcObject){
-
-        video.srcObject
-            .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
-            );
-
-    }
-
-
-    try{
-
-        /*
-         * Request new camera
-         */
-
-        const stream =
-            await navigator
-                .mediaDevices
-                .getUserMedia({
-
-                    video:{
-                        facingMode:{
-                            exact:
-                                currentCamera
-                        },
-
-                        width:{
-                            ideal:1280
-                        },
-
-                        height:{
-                            ideal:720
-                        }
-                    },
-
-                    audio:false
-
-                });
-
-
-        video.srcObject =
-            stream;
-
-
-        await video.play();
-
-
-        updateCameraUI();
-
-
-    }
-
-    catch(error){
-
-        console.warn(
-            "Exact camera switch failed",
-            error
-        );
-
-
-        /*
-         * Fallback for phones
-         */
-
-        try{
-
-            const stream =
-                await navigator
-                    .mediaDevices
-                    .getUserMedia({
-
-                        video:{
-                            facingMode:{
-                                ideal:
-                                    currentCamera
-                            }
-                        },
-
-                        audio:false
-
-                    });
-
-
-            video.srcObject =
-                stream;
-
-
-            await video.play();
-
-
-            updateCameraUI();
-
-        }
-
-        catch(secondError){
-
-            console.error(
-                secondError
-            );
-
+        try {
 
             status.innerText =
-                "🔴 CAMERA SWITCH FAILED";
+                "🧠 Loading AI...";
+
+            model = await cocoSsd.load();
+
+            status.innerText =
+                "✅ AI ready!";
+
+            result.innerText =
+                "📷 Press Start Camera";
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            status.innerText =
+                "❌ AI failed to load";
+
+            result.innerText =
+                error.message;
 
         }
 
     }
 
-}
+
+    // =====================================
+    // START CAMERA
+    // =====================================
+
+    async function startCamera() {
+
+        if (!model) {
+
+            result.innerText =
+                "⏳ AI is still loading...";
+
+            return;
+
+        }
 
 
-/* =================================
-   CAMERA UI
-================================= */
+        try {
 
-function updateCameraUI(){
+            const stream =
+                await navigator.mediaDevices.getUserMedia({
 
-    if(
-        currentCamera ===
-        "environment"
-    ){
+                    video: {
+                        facingMode: {
+                            ideal: "environment"
+                        },
 
-        cameraMode.innerText =
-            "BACK CAMERA";
+                        width: {
+                            ideal: 1280
+                        },
 
-        status.innerText =
-            cameraRunning
-                ? "🟢 BACK CAMERA ACTIVE"
-                : "📱 BACK CAMERA";
+                        height: {
+                            ideal: 720
+                        }
+                    },
 
-    }
+                    audio: false
 
-    else{
-
-        cameraMode.innerText =
-            "FRONT CAMERA";
-
-        status.innerText =
-            cameraRunning
-                ? "🟢 FRONT CAMERA ACTIVE"
-                : "🤳 FRONT CAMERA";
-
-    }
-
-}
+                });
 
 
-/* =================================
-   STOP CAMERA
-================================= */
+            video.srcObject = stream;
 
-function stopCamera(){
+            cameraRunning = true;
 
-    cameraRunning =
-        false;
+            status.innerText =
+                "📷 Camera active";
 
+            result.innerText =
+                "🔎 Looking for objects...";
 
-    if(video.srcObject){
+            detectObjects();
 
-        video.srcObject
-            .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
-            );
+        }
 
-        video.srcObject =
-            null;
+        catch (error) {
 
-    }
+            console.error(error);
 
+            status.innerText =
+                "❌ Camera error: " + error.name;
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    status.innerText =
-        "⛔ CAMERA STOPPED";
-
-
-    result.innerText =
-        "Ready";
-
-
-    objects.innerText =
-        "Press START SCANNING";
-
-
-    confidence.innerText =
-        "";
-
-}
-
-
-/* =================================
-   VOICE
-================================= */
-
-function speakObject(name){
-
-    if(
-        !("speechSynthesis" in window)
-    ){
-
-        return;
+        }
 
     }
 
 
-    const now =
-        Date.now();
+    // =====================================
+    // STOP CAMERA
+    // =====================================
+
+    function stopCamera() {
+
+        cameraRunning = false;
 
 
-    /*
-     * Don't spam voice
-     */
+        if (video.srcObject) {
 
-    if(
-        name === lastSpokenObject &&
-        now - lastSpokenTime < 4000
-    ){
+            const tracks =
+                video.srcObject.getTracks();
 
-        return;
+            tracks.forEach(track => {
+                track.stop();
+            });
 
-    }
+            video.srcObject = null;
 
+        }
 
-    lastSpokenObject =
-        name;
-
-    lastSpokenTime =
-        now;
-
-
-    let text;
-
-
-    if(name === "person"){
-
-        text =
-            "I see a person";
-
-    }
-
-    else if(
-        name === "cell phone"
-    ){
-
-        text =
-            "I see a phone";
-
-    }
-
-    else{
-
-        text =
-            "I see a " + name;
-
-    }
-
-
-    const speech =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-
-    speech.rate =
-        1;
-
-    speech.pitch =
-        1;
-
-    speech.volume =
-        1;
-
-
-    speechSynthesis.cancel();
-
-    speechSynthesis.speak(
-        speech
-    );
-
-}
-
-
-/* =================================
-   DETECTION
-================================= */
-
-async function detectObjects(){
-
-    if(!cameraRunning){
-
-        return;
-
-    }
-
-
-    /*
-     * Wait for video
-     */
-
-    if(
-        video.readyState !==
-        video.HAVE_ENOUGH_DATA
-    ){
-
-        setTimeout(
-            detectObjects,
-            300
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * Match canvas
-     */
-
-    canvas.width =
-        video.videoWidth;
-
-    canvas.height =
-        video.videoHeight;
-
-
-    try{
-
-        /*
-         * ORIGINAL DETECTION
-         */
-
-        const predictions =
-            await model.detect(
-                video
-            );
-
-
-        /*
-         * Clear boxes
-         */
 
         ctx.clearRect(
             0,
@@ -1470,133 +287,148 @@ async function detectObjects(){
         );
 
 
-        /*
-         * Same 50%
-         * threshold as your
-         * original code.
-         */
+        status.innerText =
+            "⛔ Camera stopped";
 
-        const filtered =
-            predictions.filter(
-                prediction =>
-                    prediction.score >= 0.50
+        result.innerText =
+            "Press Start Camera";
+
+        objects.innerText = "";
+
+    }
+
+
+    // =====================================
+    // OBJECT DETECTION
+    // =====================================
+
+    async function detectObjects() {
+
+        if (!cameraRunning) {
+            return;
+        }
+
+
+        if (
+            video.readyState !==
+            video.HAVE_ENOUGH_DATA
+        ) {
+
+            setTimeout(
+                detectObjects,
+                300
             );
 
-
-        if(
-            filtered.length === 0
-        ){
-
-            result.innerText =
-                "Looking...";
-
-            confidence.innerText =
-                "";
-
-            objects.innerText =
-                "No clear object detected";
+            return;
 
         }
 
-        else{
 
-            /*
-             * Strongest first
-             */
+        // Match canvas to video
+        canvas.width =
+            video.videoWidth;
 
-            filtered.sort(
-                (a,b) =>
-                    b.score -
-                    a.score
+        canvas.height =
+            video.videoHeight;
+
+
+        try {
+
+            const predictions =
+                await model.detect(video);
+
+
+            // Clear previous boxes
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
             );
 
 
-            const best =
-                filtered[0];
-
-
-            const bestConfidence =
-                Math.round(
-                    best.score * 100
+            // Only show reasonably confident detections
+            const filtered =
+                predictions.filter(
+                    prediction =>
+                        prediction.score >= 0.50
                 );
 
 
-            result.innerText =
-                "I see a " +
-                best.class;
+            if (filtered.length === 0) {
+
+                result.innerText =
+                    "👀 No object detected";
+
+                objects.innerText = "";
+
+            }
+
+            else {
+
+                // Strongest detection first
+                filtered.sort(
+                    (a, b) =>
+                        b.score - a.score
+                );
 
 
-            confidence.innerText =
-                bestConfidence +
-                "%";
+                const best =
+                    filtered[0];
 
 
-            /*
-             * Object list
-             */
+                const confidence =
+                    Math.round(
+                        best.score * 100
+                    );
 
-            objects.innerHTML =
-                filtered
-                    .map(
+
+                result.innerText =
+                    `🎯 I see a ${best.class}! ` +
+                    `${confidence}% confidence`;
+
+
+                // List all detected objects
+
+                objects.innerHTML =
+                    "<strong>Objects:</strong><br>" +
+
+                    filtered.map(
                         item => {
 
                             const percent =
                                 Math.round(
-                                    item.score *
-                                    100
+                                    item.score * 100
                                 );
 
                             return (
-                                "• " +
-                                item.class +
-                                " — " +
-                                percent +
-                                "%"
+                                `• ${item.class} — ` +
+                                `${percent}%`
                             );
 
                         }
-                    )
-                    .join("<br>");
+                    ).join("<br>");
 
 
-            /*
-             * Voice
-             */
+                // Draw boxes
 
-            speakObject(
-                best.class
-            );
+                drawBoxes(filtered);
 
-
-            /*
-             * Draw boxes
-             */
-
-            drawBoxes(
-                filtered
-            );
+            }
 
         }
 
-    }
+        catch (error) {
 
-    catch(error){
+            console.error(error);
 
-        console.error(error);
+            result.innerText =
+                "❌ Detection error";
 
-        result.innerText =
-            "Detection error";
-
-    }
+        }
 
 
-    /*
-     * Continue exactly like
-     * the original version.
-     */
-
-    if(cameraRunning){
-
+        // Run again
         setTimeout(
             detectObjects,
             300
@@ -1604,141 +436,86 @@ async function detectObjects(){
 
     }
 
-}
+
+    // =====================================
+    // DRAW BOUNDING BOXES
+    // =====================================
+
+    function drawBoxes(predictions) {
+
+        ctx.lineWidth = 4;
+
+        ctx.font =
+            "bold 18px Arial";
 
 
-/* =================================
-   DRAW BOXES
-================================= */
+        predictions.forEach(
+            prediction => {
 
-function drawBoxes(predictions){
-
-    ctx.lineWidth =
-        4;
-
-    ctx.font =
-        "bold 17px Arial";
+                const [
+                    x,
+                    y,
+                    width,
+                    height
+                ] = prediction.bbox;
 
 
-    predictions.forEach(
-        prediction => {
-
-            const [
-                x,
-                y,
-                width,
-                height
-            ] =
-                prediction.bbox;
-
-
-            const confidence =
-                Math.round(
-                    prediction.score *
-                    100
+                // Box
+                ctx.strokeRect(
+                    x,
+                    y,
+                    width,
+                    height
                 );
 
 
-            const label =
-                prediction.class +
-                " " +
-                confidence +
-                "%";
+                const confidence =
+                    Math.round(
+                        prediction.score * 100
+                    );
 
 
-            /*
-             * Glow
-             */
-
-            ctx.strokeStyle =
-                "#00ff9d";
-
-            ctx.shadowColor =
-                "#00ff9d";
-
-            ctx.shadowBlur =
-                10;
+                const label =
+                    `${prediction.class} ${confidence}%`;
 
 
-            ctx.strokeRect(
-                x,
-                y,
-                width,
-                height
-            );
+                // Label background
+                const textWidth =
+                    ctx.measureText(label).width;
 
 
-            ctx.shadowBlur =
-                0;
-
-
-            /*
-             * Label
-             */
-
-            const textWidth =
-                ctx.measureText(
-                    label
-                ).width;
-
-
-            const labelWidth =
-                textWidth + 14;
-
-
-            const labelHeight =
-                28;
-
-
-            const labelY =
-                Math.max(
-                    0,
-                    y - labelHeight
+                ctx.fillRect(
+                    x,
+                    Math.max(
+                        0,
+                        y - 28
+                    ),
+                    textWidth + 12,
+                    28
                 );
 
 
-            ctx.fillStyle =
-                "#00ff9d";
+                // Label text
+                ctx.fillText(
+                    label,
+                    x + 6,
+                    Math.max(
+                        20,
+                        y - 8
+                    )
+                );
+
+            }
+        );
+
+    }
 
 
-            ctx.beginPath();
+    // =====================================
+    // START LOADING AI
+    // =====================================
 
-            ctx.roundRect(
-                x,
-                labelY,
-                labelWidth,
-                labelHeight,
-                6
-            );
-
-            ctx.fill();
-
-
-            /*
-             * Text
-             */
-
-            ctx.fillStyle =
-                "#03110c";
-
-
-            ctx.fillText(
-                label,
-                x + 7,
-                labelY + 19
-            );
-
-        }
-    );
-
-}
-
-
-/* =================================
-   START AI
-================================= */
-
-loadAI();
+    loadAI();
 
 </script>
 
