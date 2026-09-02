@@ -1,92 +1,524 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Camera AI</title>
 
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+    <!-- COCO-SSD Object Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+
+
     <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial;
-            text-align: center;
+            margin: 0;
+            padding: 20px;
             background: #111;
             color: white;
-            padding: 20px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        #status {
+            margin: 15px;
+            font-size: 18px;
+        }
+
+        .cameraBox {
+            position: relative;
+            width: 95%;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background: black;
         }
 
         video {
-            width: 90%;
-            max-width: 500px;
-            border-radius: 20px;
-            margin-top: 20px;
+            width: 100%;
+            display: block;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         button {
-            margin: 20px;
-            padding: 15px 25px;
-            font-size: 18px;
+            margin: 15px 5px;
+            padding: 14px 22px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
+            font-size: 17px;
             cursor: pointer;
         }
 
         #result {
-            font-size: 25px;
-            margin-top: 20px;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 600px;
+            background: #222;
+            border-radius: 15px;
+            font-size: 22px;
         }
+
+        #objects {
+            margin-top: 10px;
+            font-size: 17px;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
     <h1>🤖 Camera AI</h1>
 
+    <div id="status">
+        🧠 Loading AI model...
+    </div>
+
+
     <button onclick="startCamera()">
         📷 Start Camera
     </button>
 
-    <br>
+    <button onclick="stopCamera()">
+        ⛔ Stop
+    </button>
 
-    <video id="camera" autoplay playsinline></video>
 
-    <div id="result">
-        Point the camera at something 👀
+    <div class="cameraBox">
+
+        <video
+            id="camera"
+            autoplay
+            playsinline>
+        </video>
+
+        <canvas id="canvas"></canvas>
+
     </div>
 
 
-    <script>
+    <div id="result">
+        Waiting for camera...
+    </div>
 
-        const camera = document.getElementById("camera");
-        const result = document.getElementById("result");
+    <div id="objects"></div>
 
 
-        async function startCamera() {
+<script>
 
-            try {
+    let model = null;
 
-                const stream =
-                    await navigator.mediaDevices.getUserMedia({
-                        video: {
-                            facingMode: "environment"
-                        }
-                    });
+    let cameraRunning = false;
 
-                camera.srcObject = stream;
+    const video =
+        document.getElementById("camera");
 
-                result.innerText =
-                    "📷 Camera is working!";
+    const canvas =
+        document.getElementById("canvas");
 
-            }
+    const ctx =
+        canvas.getContext("2d");
 
-            catch(error) {
+    const status =
+        document.getElementById("status");
 
-                result.innerText =
-                    "❌ Could not access camera";
+    const result =
+        document.getElementById("result");
 
-                console.log(error);
+    const objects =
+        document.getElementById("objects");
 
-            }
+
+    // =====================================
+    // LOAD AI
+    // =====================================
+
+    async function loadAI() {
+
+        try {
+
+            status.innerText =
+                "🧠 Loading AI...";
+
+            model = await cocoSsd.load();
+
+            status.innerText =
+                "✅ AI ready!";
+
+            result.innerText =
+                "📷 Press Start Camera";
+
         }
 
-    </script>
+        catch (error) {
+
+            console.error(error);
+
+            status.innerText =
+                "❌ AI failed to load";
+
+            result.innerText =
+                error.message;
+
+        }
+
+    }
+
+
+    // =====================================
+    // START CAMERA
+    // =====================================
+
+    async function startCamera() {
+
+        if (!model) {
+
+            result.innerText =
+                "⏳ AI is still loading...";
+
+            return;
+
+        }
+
+
+        try {
+
+            const stream =
+                await navigator.mediaDevices.getUserMedia({
+
+                    video: {
+                        facingMode: {
+                            ideal: "environment"
+                        },
+
+                        width: {
+                            ideal: 1280
+                        },
+
+                        height: {
+                            ideal: 720
+                        }
+                    },
+
+                    audio: false
+
+                });
+
+
+            video.srcObject = stream;
+
+            cameraRunning = true;
+
+            status.innerText =
+                "📷 Camera active";
+
+            result.innerText =
+                "🔎 Looking for objects...";
+
+            detectObjects();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            status.innerText =
+                "❌ Camera error: " + error.name;
+
+        }
+
+    }
+
+
+    // =====================================
+    // STOP CAMERA
+    // =====================================
+
+    function stopCamera() {
+
+        cameraRunning = false;
+
+
+        if (video.srcObject) {
+
+            const tracks =
+                video.srcObject.getTracks();
+
+            tracks.forEach(track => {
+                track.stop();
+            });
+
+            video.srcObject = null;
+
+        }
+
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        status.innerText =
+            "⛔ Camera stopped";
+
+        result.innerText =
+            "Press Start Camera";
+
+        objects.innerText = "";
+
+    }
+
+
+    // =====================================
+    // OBJECT DETECTION
+    // =====================================
+
+    async function detectObjects() {
+
+        if (!cameraRunning) {
+            return;
+        }
+
+
+        if (
+            video.readyState !==
+            video.HAVE_ENOUGH_DATA
+        ) {
+
+            setTimeout(
+                detectObjects,
+                300
+            );
+
+            return;
+
+        }
+
+
+        // Match canvas to video
+        canvas.width =
+            video.videoWidth;
+
+        canvas.height =
+            video.videoHeight;
+
+
+        try {
+
+            const predictions =
+                await model.detect(video);
+
+
+            // Clear previous boxes
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            // Only show reasonably confident detections
+            const filtered =
+                predictions.filter(
+                    prediction =>
+                        prediction.score >= 0.50
+                );
+
+
+            if (filtered.length === 0) {
+
+                result.innerText =
+                    "👀 No object detected";
+
+                objects.innerText = "";
+
+            }
+
+            else {
+
+                // Strongest detection first
+                filtered.sort(
+                    (a, b) =>
+                        b.score - a.score
+                );
+
+
+                const best =
+                    filtered[0];
+
+
+                const confidence =
+                    Math.round(
+                        best.score * 100
+                    );
+
+
+                result.innerText =
+                    `🎯 I see a ${best.class}! ` +
+                    `${confidence}% confidence`;
+
+
+                // List all detected objects
+
+                objects.innerHTML =
+                    "<strong>Objects:</strong><br>" +
+
+                    filtered.map(
+                        item => {
+
+                            const percent =
+                                Math.round(
+                                    item.score * 100
+                                );
+
+                            return (
+                                `• ${item.class} — ` +
+                                `${percent}%`
+                            );
+
+                        }
+                    ).join("<br>");
+
+
+                // Draw boxes
+
+                drawBoxes(filtered);
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            result.innerText =
+                "❌ Detection error";
+
+        }
+
+
+        // Run again
+        setTimeout(
+            detectObjects,
+            300
+        );
+
+    }
+
+
+    // =====================================
+    // DRAW BOUNDING BOXES
+    // =====================================
+
+    function drawBoxes(predictions) {
+
+        ctx.lineWidth = 4;
+
+        ctx.font =
+            "bold 18px Arial";
+
+
+        predictions.forEach(
+            prediction => {
+
+                const [
+                    x,
+                    y,
+                    width,
+                    height
+                ] = prediction.bbox;
+
+
+                // Box
+                ctx.strokeRect(
+                    x,
+                    y,
+                    width,
+                    height
+                );
+
+
+                const confidence =
+                    Math.round(
+                        prediction.score * 100
+                    );
+
+
+                const label =
+                    `${prediction.class} ${confidence}%`;
+
+
+                // Label background
+                const textWidth =
+                    ctx.measureText(label).width;
+
+
+                ctx.fillRect(
+                    x,
+                    Math.max(
+                        0,
+                        y - 28
+                    ),
+                    textWidth + 12,
+                    28
+                );
+
+
+                // Label text
+                ctx.fillText(
+                    label,
+                    x + 6,
+                    Math.max(
+                        20,
+                        y - 8
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    // =====================================
+    // START LOADING AI
+    // =====================================
+
+    loadAI();
+
+</script>
 
 </body>
+
 </html>
