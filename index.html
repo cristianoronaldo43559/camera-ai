@@ -5,42 +5,43 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
 <title>VISION AI</title>
 
-<!-- AI -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 
+
 <style>
 
-/* =========================
-   RESET
-========================= */
+/* ==============================
+   BASE
+================================ */
 
 *{
     box-sizing:border-box;
-    margin:0;
-    padding:0;
 }
 
 body{
+
+    margin:0;
 
     min-height:100vh;
 
     background:
         radial-gradient(
-            circle at 50% -10%,
-            #17352d 0%,
-            #0a1110 35%,
-            #050707 75%
+            circle at 50% -20%,
+            #123b2d,
+            #07100d 38%,
+            #030504 80%
         );
 
-    color:#ffffff;
+    color:white;
 
     font-family:
         Arial,
@@ -51,48 +52,29 @@ body{
 }
 
 
-/* =========================
-   APP
-========================= */
+/* ==============================
+   HEADER
+================================ */
 
-.app{
+.header{
 
-    width:100%;
-    min-height:100vh;
+    height:72px;
 
-    display:flex;
-    flex-direction:column;
-
-}
-
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-
-    width:100%;
-
-    padding:
-        18px
-        18px
-        12px;
+    padding:12px 16px;
 
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
-
-    position:relative;
-
-    z-index:10;
 }
 
-.brand{
+.logoArea{
 
     display:flex;
+
     align-items:center;
+
     gap:11px;
 }
 
@@ -104,75 +86,77 @@ body{
     border-radius:14px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     background:
         linear-gradient(
-            145deg,
-            #16e89a,
-            #07855b
+            135deg,
+            #00ff9d,
+            #00875e
         );
 
-    box-shadow:
-        0 0 25px rgba(0,255,170,.22);
+    color:#03120d;
 
     font-size:21px;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 25px
+        rgba(0,255,157,.22);
 }
 
-.brandText{
+.title{
 
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-
+    text-align:left;
 }
 
-.brandName{
+.title h1{
+
+    margin:0;
 
     font-size:17px;
-    font-weight:800;
-    letter-spacing:1.5px;
-}
-
-.brandSub{
-
-    color:#71807b;
-
-    font-size:10px;
 
     letter-spacing:2px;
-
-    text-transform:uppercase;
 }
 
+.title p{
 
-/* ONLINE */
+    margin:3px 0 0;
+
+    font-size:9px;
+
+    color:#71837c;
+
+    letter-spacing:1.5px;
+}
 
 .online{
 
     display:flex;
-    align-items:center;
-    gap:7px;
 
-    padding:
-        8px
-        11px;
+    align-items:center;
+
+    gap:6px;
+
+    padding:8px 11px;
 
     border-radius:20px;
 
     background:
-        rgba(255,255,255,.045);
+        rgba(255,255,255,.05);
 
     border:
         1px solid
-        rgba(255,255,255,.07);
+        rgba(255,255,255,.08);
 
-    color:#8eaaa1;
+    color:#8b9e97;
 
-    font-size:11px;
+    font-size:9px;
 
-    letter-spacing:.7px;
+    letter-spacing:1px;
 }
 
 .onlineDot{
@@ -187,71 +171,72 @@ body{
     box-shadow:
         0 0 10px #00ff9d;
 
-    animation:pulse 1.6s infinite;
-}
-
-@keyframes pulse{
-
-    0%,100%{
-        opacity:1;
-    }
-
-    50%{
-        opacity:.35;
-    }
-
 }
 
 
-/* =========================
-   CAMERA AREA
-========================= */
+/* ==============================
+   STATUS
+================================ */
 
-.cameraWrap{
+.status{
+
+    text-align:center;
+
+    height:30px;
+
+    font-size:11px;
+
+    color:#71817b;
+
+    letter-spacing:1px;
+}
+
+
+/* ==============================
+   CAMERA
+================================ */
+
+.cameraContainer{
 
     width:100%;
 
     padding:
-        4px
-        14px
-        0;
-
-    flex:1;
+        0 12px;
 
     display:flex;
+
     justify-content:center;
 }
 
-
-.camera{
+.cameraBox{
 
     position:relative;
 
     width:100%;
-    max-width:760px;
+
+    max-width:700px;
 
     aspect-ratio:3 / 4;
 
     background:#000;
 
-    border-radius:28px;
+    border-radius:27px;
 
     overflow:hidden;
 
     border:
         1px solid
-        rgba(255,255,255,.09);
+        rgba(255,255,255,.1);
 
     box-shadow:
         0 20px 70px
         rgba(0,0,0,.5);
-
 }
 
 
-/* =========================
+/* ==============================
    VIDEO
-========================= */
+================================ */
 
 video{
 
@@ -261,66 +246,133 @@ video{
     display:block;
 
     object-fit:cover;
-
 }
 
 
-/* =========================
+/* ==============================
    CANVAS
-========================= */
+================================ */
 
 canvas{
 
     position:absolute;
 
-    left:0;
     top:0;
+    left:0;
 
     width:100%;
     height:100%;
 
     pointer-events:none;
-
 }
 
 
-/* =========================
-   CAMERA GRADIENT
-========================= */
+/* ==============================
+   CAMERA CORNERS
+================================ */
 
-.camera::after{
-
-    content:"";
+.corner{
 
     position:absolute;
 
-    left:0;
-    right:0;
-    bottom:0;
+    width:25px;
+    height:25px;
 
-    height:35%;
+    border-color:#00ff9d;
 
-    background:
-        linear-gradient(
-            transparent,
-            rgba(0,0,0,.75)
-        );
+    border-style:solid;
 
-    pointer-events:none;
+    z-index:5;
 
+    opacity:.85;
+}
+
+.topLeft{
+
+    top:15px;
+    left:15px;
+
+    border-width:
+        2px 0 0 2px;
+}
+
+.topRight{
+
+    top:15px;
+    right:15px;
+
+    border-width:
+        2px 2px 0 0;
+}
+
+.bottomLeft{
+
+    bottom:15px;
+    left:15px;
+
+    border-width:
+        0 0 2px 2px;
+}
+
+.bottomRight{
+
+    bottom:15px;
+    right:15px;
+
+    border-width:
+        0 2px 2px 0;
 }
 
 
-/* =========================
+/* ==============================
+   CAMERA MODE
+================================ */
+
+.cameraMode{
+
+    position:absolute;
+
+    top:17px;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:6;
+
+    padding:
+        8px 13px;
+
+    border-radius:20px;
+
+    background:
+        rgba(0,0,0,.5);
+
+    backdrop-filter:
+        blur(10px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    color:#b4c4be;
+
+    font-size:9px;
+
+    letter-spacing:1.5px;
+}
+
+
+/* ==============================
    SCAN LINE
-========================= */
+================================ */
 
 .scanLine{
 
     position:absolute;
 
-    left:8%;
-    right:8%;
+    left:7%;
+    right:7%;
 
     height:2px;
 
@@ -333,196 +385,100 @@ canvas{
         );
 
     box-shadow:
-        0 0 14px
-        rgba(0,255,157,.7);
+        0 0 12px
+        rgba(0,255,157,.8);
 
-    opacity:.55;
+    opacity:.5;
 
     animation:
-        scan 3.5s
+        scan 3s
         ease-in-out
         infinite;
 
     pointer-events:none;
+
+    z-index:3;
 }
 
 @keyframes scan{
 
     0%{
-        top:10%;
+
+        top:8%;
+
         opacity:0;
     }
 
     15%{
-        opacity:.7;
+
+        opacity:.6;
     }
 
     85%{
-        opacity:.7;
+
+        opacity:.6;
     }
 
     100%{
-        top:90%;
+
+        top:92%;
+
         opacity:0;
     }
-
 }
 
 
-/* =========================
-   CORNER UI
-========================= */
+/* ==============================
+   RESULT
+================================ */
 
-.corner{
+.resultPanel{
 
     position:absolute;
 
-    width:27px;
-    height:27px;
+    left:15px;
+    right:15px;
+    bottom:15px;
 
-    border-color:
-        rgba(0,255,157,.85);
+    z-index:8;
 
-    border-style:solid;
+    padding:14px 16px;
 
-    z-index:4;
-
-}
-
-.corner.tl{
-
-    top:18px;
-    left:18px;
-
-    border-width:2px 0 0 2px;
-
-}
-
-.corner.tr{
-
-    top:18px;
-    right:18px;
-
-    border-width:2px 2px 0 0;
-
-}
-
-.corner.bl{
-
-    bottom:18px;
-    left:18px;
-
-    border-width:0 0 2px 2px;
-
-}
-
-.corner.br{
-
-    bottom:18px;
-    right:18px;
-
-    border-width:0 2px 2px 0;
-
-}
-
-
-/* =========================
-   CAMERA LABEL
-========================= */
-
-.cameraLabel{
-
-    position:absolute;
-
-    top:18px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    z-index:5;
-
-    padding:
-        8px
-        13px;
-
-    border-radius:20px;
+    border-radius:18px;
 
     background:
-        rgba(0,0,0,.48);
+        rgba(5,10,8,.75);
 
     backdrop-filter:
-        blur(12px);
+        blur(16px);
 
     border:
         1px solid
         rgba(255,255,255,.1);
 
-    color:#b9c8c3;
-
-    font-size:10px;
-
-    letter-spacing:1.5px;
-
-    white-space:nowrap;
-
+    text-align:left;
 }
 
-
-/* =========================
-   RESULT CARD
-========================= */
-
-.resultCard{
-
-    position:absolute;
-
-    left:18px;
-    right:18px;
-    bottom:18px;
-
-    z-index:6;
-
-    padding:15px 16px;
-
-    border-radius:18px;
-
-    background:
-        rgba(8,13,12,.72);
-
-    backdrop-filter:
-        blur(18px);
-
-    border:
-        1px solid
-        rgba(255,255,255,.09);
-
-    box-shadow:
-        0 10px 35px
-        rgba(0,0,0,.25);
-
-}
-
-.resultTop{
+.resultHeader{
 
     display:flex;
 
     align-items:center;
+
     justify-content:space-between;
 
-    margin-bottom:7px;
-
+    margin-bottom:5px;
 }
 
-.resultTitle{
+.resultLabel{
 
-    color:#6f817b;
+    font-size:8px;
 
-    font-size:9px;
+    color:#71817b;
 
     letter-spacing:1.8px;
 
     text-transform:uppercase;
-
 }
 
 .confidence{
@@ -534,355 +490,183 @@ canvas{
     font-weight:bold;
 }
 
-.resultObject{
+#result{
 
-    font-size:24px;
+    font-size:23px;
 
-    font-weight:800;
-
-    letter-spacing:.2px;
+    font-weight:bold;
 }
 
-.resultHint{
+#objects{
 
     margin-top:4px;
 
-    color:#899792;
+    color:#82918c;
 
-    font-size:11px;
+    font-size:10px;
+
 }
 
 
-/* =========================
-   BOTTOM CONTROLS
-========================= */
+/* ==============================
+   CONTROLS
+================================ */
 
 .controls{
 
-    width:100%;
-
-    padding:
-        16px
-        18px
-        22px;
-
     display:flex;
-
-    justify-content:center;
 
     align-items:center;
 
-    gap:12px;
+    justify-content:center;
 
+    gap:10px;
+
+    padding:
+        15px 14px 10px;
 }
 
 
-/* =========================
+/* ==============================
    BUTTONS
-========================= */
+================================ */
 
 button{
 
     border:none;
 
-    color:white;
-
-    font-family:inherit;
-
     cursor:pointer;
 
-    transition:
-        transform .15s,
-        background .2s;
+    color:white;
 
     -webkit-tap-highlight-color:
         transparent;
 
+    transition:
+        transform .12s;
 }
 
 button:active{
 
-    transform:scale(.94);
-
+    transform:scale(.93);
 }
 
 
 /* START */
 
-.startBtn{
+.startButton{
 
     flex:1;
 
-    max-width:240px;
+    max-width:250px;
 
-    height:55px;
+    height:53px;
 
-    border-radius:18px;
+    border-radius:17px;
 
     background:
         linear-gradient(
             135deg,
-            #00d889,
-            #009b67
+            #00dc8a,
+            #009965
         );
 
     box-shadow:
-        0 8px 30px
-        rgba(0,255,157,.18);
+        0 8px 25px
+        rgba(0,255,157,.16);
 
-    font-size:15px;
+    font-size:14px;
 
-    font-weight:800;
+    font-weight:bold;
 
     letter-spacing:.5px;
 }
 
 
-/* ROUND BUTTONS */
+/* ICON */
 
-.iconBtn{
+.iconButton{
 
-    width:55px;
-    height:55px;
+    width:53px;
+    height:53px;
 
-    flex-shrink:0;
-
-    border-radius:18px;
+    border-radius:17px;
 
     background:
-        rgba(255,255,255,.065);
+        rgba(255,255,255,.06);
 
     border:
         1px solid
         rgba(255,255,255,.1);
 
+    font-size:20px;
+
     backdrop-filter:
-        blur(12px);
+        blur(10px);
+}
 
-    font-size:21px;
+.stopButton{
 
+    color:#ff7777;
 }
 
 
-/* STOP */
+/* ==============================
+   FOOTER
+================================ */
 
-.stopBtn{
-
-    color:#ff8585;
-
-}
-
-
-/* =========================
-   STATUS
-========================= */
-
-.statusArea{
+.footer{
 
     text-align:center;
 
-    padding-bottom:3px;
+    padding:
+        2px 0 15px;
 
-    min-height:25px;
+    color:#4f5d58;
 
-}
+    font-size:8px;
 
-.status{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    color:#71807b;
-
-    font-size:10px;
-
-    letter-spacing:1.2px;
-
-    text-transform:uppercase;
-
-}
-
-.statusDot{
-
-    width:6px;
-    height:6px;
-
-    border-radius:50%;
-
-    background:#6a7773;
-
-}
-
-.status.ready .statusDot{
-
-    background:#00ff9d;
-
-    box-shadow:
-        0 0 9px #00ff9d;
-
-}
-
-.status.error .statusDot{
-
-    background:#ff5c5c;
-
-    box-shadow:
-        0 0 9px #ff5c5c;
-
+    letter-spacing:1.5px;
 }
 
 
-/* =========================
+/* ==============================
    DESKTOP
-========================= */
+================================ */
 
 @media(min-width:700px){
 
-    .camera{
+    .cameraBox{
 
         aspect-ratio:16 / 10;
 
         max-height:
-            calc(100vh - 150px);
-
-    }
-
-    .cameraWrap{
-
-        padding:
-            8px
-            24px
-            0;
-
+            calc(100vh - 160px);
     }
 
 }
 
 
-/* =========================
-   SMALL PHONES
-========================= */
+/* ==============================
+   SMALL PHONE
+================================ */
 
 @media(max-height:650px){
 
-    .topbar{
+    .header{
 
-        padding-top:11px;
-
+        height:60px;
     }
 
-    .cameraWrap{
+    .cameraBox{
 
-        padding-top:0;
-
-    }
-
-    .camera{
-
-        border-radius:22px;
-
+        border-radius:21px;
     }
 
     .controls{
 
         padding-top:10px;
-        padding-bottom:12px;
-
     }
-
-}
-
-
-/* =========================
-   LOADING OVERLAY
-========================= */
-
-.loading{
-
-    position:absolute;
-
-    inset:0;
-
-    z-index:20;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    background:
-        rgba(3,7,6,.92);
-
-    backdrop-filter:
-        blur(12px);
-
-    transition:
-        opacity .4s;
-
-}
-
-.loading.hide{
-
-    opacity:0;
-
-    pointer-events:none;
-
-}
-
-.loader{
-
-    width:45px;
-    height:45px;
-
-    border-radius:50%;
-
-    border:
-        3px solid
-        rgba(255,255,255,.08);
-
-    border-top-color:
-        #00ff9d;
-
-    animation:
-        spin .8s
-        linear
-        infinite;
-
-}
-
-@keyframes spin{
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-.loadingText{
-
-    margin-top:15px;
-
-    color:#9aa9a4;
-
-    font-size:11px;
-
-    letter-spacing:1.5px;
-
-}
-
-
-/* =========================
-   HIDDEN
-========================= */
-
-.hidden{
-
-    display:none;
 
 }
 
@@ -894,248 +678,200 @@ button:active{
 <body>
 
 
-<div class="app">
+<!-- ==============================
+     HEADER
+================================ -->
 
+<header class="header">
 
-    <!-- =====================
-         HEADER
-    ====================== -->
+    <div class="logoArea">
 
-    <header class="topbar">
+        <div class="logo">
+            ◉
+        </div>
 
-        <div class="brand">
+        <div class="title">
 
-            <div class="logo">
-                ◉
-            </div>
+            <h1>
+                VISION AI
+            </h1>
 
-            <div class="brandText">
-
-                <div class="brandName">
-                    VISION AI
-                </div>
-
-                <div class="brandSub">
-                    Object Recognition
-                </div>
-
-            </div>
+            <p>
+                OBJECT RECOGNITION
+            </p>
 
         </div>
 
-
-        <div class="online">
-
-            <span class="onlineDot"></span>
-
-            AI ONLINE
-
-        </div>
-
-    </header>
+    </div>
 
 
+    <div class="online">
 
-    <!-- =====================
-         CAMERA
-    ====================== -->
+        <span class="onlineDot"></span>
 
-    <main class="cameraWrap">
+        AI ONLINE
 
-        <div class="camera">
+    </div>
 
-
-            <video
-                id="video"
-                autoplay
-                playsinline>
-            </video>
+</header>
 
 
-            <canvas
-                id="canvas">
-            </canvas>
+<!-- ==============================
+     STATUS
+================================ -->
+
+<div
+    id="status"
+    class="status">
+
+    🧠 Loading AI model...
+
+</div>
 
 
-            <!-- Scan -->
+<!-- ==============================
+     CAMERA
+================================ -->
 
-            <div class="scanLine"></div>
+<div class="cameraContainer">
 
-
-            <!-- Corners -->
-
-            <div class="corner tl"></div>
-            <div class="corner tr"></div>
-            <div class="corner bl"></div>
-            <div class="corner br"></div>
+    <div class="cameraBox">
 
 
-            <!-- Camera label -->
-
-            <div
-                class="cameraLabel"
-                id="cameraLabel">
-
-                BACK CAMERA
-
-            </div>
+        <video
+            id="camera"
+            autoplay
+            playsinline>
+        </video>
 
 
-            <!-- Result -->
-
-            <div class="resultCard">
-
-                <div class="resultTop">
-
-                    <div class="resultTitle">
-                        AI Detection
-                    </div>
-
-                    <div
-                        class="confidence"
-                        id="confidence">
-                    </div>
-
-                </div>
+        <canvas
+            id="canvas">
+        </canvas>
 
 
-                <div
-                    class="resultObject"
-                    id="result">
-
-                    Waiting...
-
-                </div>
+        <div class="scanLine"></div>
 
 
-                <div
-                    class="resultHint"
-                    id="resultHint">
+        <div class="corner topLeft"></div>
 
-                    Start the camera to begin scanning
+        <div class="corner topRight"></div>
 
-                </div>
+        <div class="corner bottomLeft"></div>
 
-            </div>
+        <div class="corner bottomRight"></div>
 
-
-            <!-- Loading -->
-
-            <div
-                class="loading"
-                id="loading">
-
-                <div class="loader"></div>
-
-                <div
-                    class="loadingText"
-                    id="loadingText">
-
-                    LOADING AI MODEL
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </main>
-
-
-
-    <!-- =====================
-         STATUS
-    ====================== -->
-
-    <div class="statusArea">
 
         <div
-            class="status"
-            id="status">
+            id="cameraMode"
+            class="cameraMode">
 
-            <span class="statusDot"></span>
-
-            <span id="statusText">
-                Loading AI
-            </span>
+            BACK CAMERA
 
         </div>
 
-    </div>
+
+        <div class="resultPanel">
+
+            <div class="resultHeader">
+
+                <div class="resultLabel">
+                    AI DETECTION
+                </div>
+
+                <div
+                    id="confidence"
+                    class="confidence">
+                </div>
+
+            </div>
 
 
+            <div id="result">
 
-    <!-- =====================
-         CONTROLS
-    ====================== -->
+                Waiting...
 
-    <div class="controls">
-
-
-        <button
-            class="iconBtn stopBtn"
-            onclick="stopAI()"
-            aria-label="Stop">
-
-            ■
-
-        </button>
+            </div>
 
 
-        <button
-            class="startBtn"
-            onclick="startAI()">
+            <div id="objects">
 
-            📷 START SCANNING
+                Start the camera to scan objects
 
-        </button>
+            </div>
 
-
-        <button
-            class="iconBtn"
-            onclick="switchCamera()"
-            aria-label="Switch camera">
-
-            🔄
-
-        </button>
+        </div>
 
 
     </div>
+
+</div>
+
+
+<!-- ==============================
+     CONTROLS
+================================ -->
+
+<div class="controls">
+
+
+    <button
+        class="iconButton stopButton"
+        onclick="stopCamera()">
+
+        ■
+
+    </button>
+
+
+    <button
+        class="startButton"
+        onclick="startCamera()">
+
+        📷 START SCANNING
+
+    </button>
+
+
+    <button
+        class="iconButton"
+        onclick="switchCamera()">
+
+        🔄
+
+    </button>
 
 
 </div>
 
 
+<div class="footer">
+
+    POWERED BY COCO-SSD
+
+</div>
+
 
 <script>
 
-/* =========================================
+
+/* =================================
    VARIABLES
-========================================= */
+================================= */
 
 let model = null;
 
-let stream = null;
+let cameraRunning = false;
 
-let running = false;
+let currentCamera = "environment";
 
-let detecting = false;
+let lastSpokenObject = "";
 
-let cameraMode = "environment";
+let lastSpokenTime = 0;
 
-let lastObject = "";
-
-let lastVoiceTime = 0;
-
-
-/* =========================================
-   ELEMENTS
-========================================= */
 
 const video =
-    document.getElementById("video");
+    document.getElementById("camera");
 
 const canvas =
     document.getElementById("canvas");
@@ -1143,93 +879,55 @@ const canvas =
 const ctx =
     canvas.getContext("2d");
 
+const status =
+    document.getElementById("status");
+
 const result =
     document.getElementById("result");
+
+const objects =
+    document.getElementById("objects");
 
 const confidence =
     document.getElementById("confidence");
 
-const resultHint =
-    document.getElementById("resultHint");
-
-const status =
-    document.getElementById("status");
-
-const statusText =
-    document.getElementById("statusText");
-
-const loading =
-    document.getElementById("loading");
-
-const loadingText =
-    document.getElementById("loadingText");
-
-const cameraLabel =
-    document.getElementById("cameraLabel");
+const cameraMode =
+    document.getElementById("cameraMode");
 
 
-/* =========================================
-   STATUS HELPER
-========================================= */
-
-function setStatus(text, type=""){
-
-    statusText.innerText = text;
-
-    status.className =
-        "status " + type;
-
-}
-
-
-/* =========================================
+/* =================================
    LOAD AI
-========================================= */
+================================= */
 
 async function loadAI(){
 
     try{
 
-        setStatus(
-            "Loading AI"
-        );
+        status.innerText =
+            "🧠 Loading AI model...";
 
-        loadingText.innerText =
-            "LOADING AI MODEL";
 
         /*
-         * IMPORTANT:
-         * Using the original COCO-SSD
-         * configuration here.
+         * THIS IS THE ORIGINAL MODEL
          *
-         * Not using the lite model.
+         * Do NOT change this to:
+         * lite_mobilenet_v2
          */
 
         model =
             await cocoSsd.load();
 
 
-        loading.classList.add(
-            "hide"
-        );
-
-
-        setStatus(
-            "AI Ready",
-            "ready"
-        );
+        status.innerText =
+            "🟢 AI READY";
 
 
         result.innerText =
-            "Ready to scan";
+            "Ready";
 
-        resultHint.innerText =
+        objects.innerText =
             "Press START SCANNING";
 
-
-        console.log(
-            "VISION AI READY"
-        );
 
     }
 
@@ -1238,45 +936,31 @@ async function loadAI(){
         console.error(error);
 
 
-        loadingText.innerText =
-            "AI FAILED TO LOAD";
-
-
-        setStatus(
-            "AI Error",
-            "error"
-        );
+        status.innerText =
+            "🔴 AI FAILED";
 
 
         result.innerText =
-            "AI unavailable";
+            "AI could not load";
 
-        resultHint.innerText =
-            "Check your internet connection";
-
-
-        loading.classList.add(
-            "hide"
-        );
+        objects.innerText =
+            error.message;
 
     }
 
 }
 
 
-/* =========================================
-   START AI
-========================================= */
+/* =================================
+   START CAMERA
+================================= */
 
-async function startAI(){
+async function startCamera(){
 
     if(!model){
 
         result.innerText =
-            "AI still loading";
-
-        resultHint.innerText =
-            "Please wait a moment";
+            "AI is still loading...";
 
         return;
 
@@ -1286,35 +970,12 @@ async function startAI(){
     try{
 
         /*
-         * Unlock speech on mobile
-         * from the button press.
+         * Stop previous camera
          */
 
-        if(
-            "speechSynthesis" in window
-        ){
+        if(video.srcObject){
 
-            speechSynthesis.cancel();
-
-            const welcome =
-                new SpeechSynthesisUtterance(
-                    "Vision AI started"
-                );
-
-            speechSynthesis.speak(
-                welcome
-            );
-
-        }
-
-
-        /*
-         * Stop existing camera
-         */
-
-        if(stream){
-
-            stream
+            video.srcObject
                 .getTracks()
                 .forEach(
                     track =>
@@ -1325,66 +986,54 @@ async function startAI(){
 
 
         /*
-         * Camera
+         * Start camera
          */
 
-        stream =
+        const stream =
             await navigator
-            .mediaDevices
-            .getUserMedia({
+                .mediaDevices
+                .getUserMedia({
 
-                video:{
-                    facingMode:{
-                        ideal:cameraMode
+                    video:{
+                        facingMode:{
+                            ideal:
+                                currentCamera
+                        },
+
+                        width:{
+                            ideal:1280
+                        },
+
+                        height:{
+                            ideal:720
+                        }
                     },
 
-                    width:{
-                        ideal:1280
-                    },
+                    audio:false
 
-                    height:{
-                        ideal:720
-                    }
-                },
-
-                audio:false
-
-            });
+                });
 
 
         video.srcObject =
             stream;
 
 
-        await video.play();
+        cameraRunning =
+            true;
 
 
-        running = true;
-
-
-        updateCameraLabel();
-
-
-        setStatus(
-            cameraMode === "environment"
-                ? "Back Camera Active"
-                : "Front Camera Active",
-            "ready"
-        );
+        updateCameraUI();
 
 
         result.innerText =
             "Scanning...";
 
-        resultHint.innerText =
-            "Point the camera at an object";
+
+        objects.innerText =
+            "Looking for objects";
 
 
-        /*
-         * Start detection
-         */
-
-        detect();
+        detectObjects();
 
     }
 
@@ -1393,16 +1042,14 @@ async function startAI(){
         console.error(error);
 
 
-        setStatus(
-            "Camera Error",
-            "error"
-        );
+        status.innerText =
+            "🔴 CAMERA ERROR";
 
 
         result.innerText =
-            "Camera unavailable";
+            error.name;
 
-        resultHint.innerText =
+        objects.innerText =
             error.message;
 
     }
@@ -1410,45 +1057,49 @@ async function startAI(){
 }
 
 
-/* =========================================
-   CAMERA SWITCH
-========================================= */
+/* =================================
+   SWITCH CAMERA
+================================= */
 
 async function switchCamera(){
 
     /*
-     * Change selected camera
+     * Toggle
      */
 
     if(
-        cameraMode === "environment"
+        currentCamera ===
+        "environment"
     ){
 
-        cameraMode = "user";
+        currentCamera =
+            "user";
 
     }
+
     else{
 
-        cameraMode = "environment";
+        currentCamera =
+            "environment";
 
     }
 
 
-    updateCameraLabel();
+    updateCameraUI();
 
 
     /*
-     * If camera isn't running,
-     * just change selection.
+     * Camera isn't running?
+     * Just remember selection.
      */
 
-    if(!running){
+    if(!cameraRunning){
 
-        setStatus(
-            cameraMode === "environment"
-                ? "Back Camera Selected"
-                : "Front Camera Selected"
-        );
+        status.innerText =
+            currentCamera ===
+            "environment"
+                ? "📱 Back camera selected"
+                : "🤳 Front camera selected";
 
         return;
 
@@ -1456,12 +1107,12 @@ async function switchCamera(){
 
 
     /*
-     * Stop old camera
+     * Stop current stream
      */
 
-    if(stream){
+    if(video.srcObject){
 
-        stream
+        video.srcObject
             .getTracks()
             .forEach(
                 track =>
@@ -1474,31 +1125,32 @@ async function switchCamera(){
     try{
 
         /*
-         * Start selected camera
+         * Request new camera
          */
 
-        stream =
+        const stream =
             await navigator
-            .mediaDevices
-            .getUserMedia({
+                .mediaDevices
+                .getUserMedia({
 
-                video:{
-                    facingMode:{
-                        exact:cameraMode
+                    video:{
+                        facingMode:{
+                            exact:
+                                currentCamera
+                        },
+
+                        width:{
+                            ideal:1280
+                        },
+
+                        height:{
+                            ideal:720
+                        }
                     },
 
-                    width:{
-                        ideal:1280
-                    },
+                    audio:false
 
-                    height:{
-                        ideal:720
-                    }
-                },
-
-                audio:false
-
-            });
+                });
 
 
         video.srcObject =
@@ -1508,47 +1160,40 @@ async function switchCamera(){
         await video.play();
 
 
-        setStatus(
-            cameraMode === "environment"
-                ? "Back Camera Active"
-                : "Front Camera Active",
-            "ready"
-        );
+        updateCameraUI();
 
-
-        resultHint.innerText =
-            "Camera switched successfully";
 
     }
 
     catch(error){
 
         console.warn(
-            "Exact camera switch failed:",
+            "Exact camera switch failed",
             error
         );
 
 
         /*
-         * Fallback
+         * Fallback for phones
          */
 
         try{
 
-            stream =
+            const stream =
                 await navigator
-                .mediaDevices
-                .getUserMedia({
+                    .mediaDevices
+                    .getUserMedia({
 
-                    video:{
-                        facingMode:{
-                            ideal:cameraMode
-                        }
-                    },
+                        video:{
+                            facingMode:{
+                                ideal:
+                                    currentCamera
+                            }
+                        },
 
-                    audio:false
+                        audio:false
 
-                });
+                    });
 
 
             video.srcObject =
@@ -1558,12 +1203,7 @@ async function switchCamera(){
             await video.play();
 
 
-            setStatus(
-                cameraMode === "environment"
-                    ? "Back Camera Active"
-                    : "Front Camera Active",
-                "ready"
-            );
+            updateCameraUI();
 
         }
 
@@ -1574,14 +1214,8 @@ async function switchCamera(){
             );
 
 
-            setStatus(
-                "Camera Switch Failed",
-                "error"
-            );
-
-
-            resultHint.innerText =
-                secondError.message;
+            status.innerText =
+                "🔴 CAMERA SWITCH FAILED";
 
         }
 
@@ -1590,44 +1224,65 @@ async function switchCamera(){
 }
 
 
-/* =========================================
-   CAMERA LABEL
-========================================= */
+/* =================================
+   CAMERA UI
+================================= */
 
-function updateCameraLabel(){
+function updateCameraUI(){
 
-    cameraLabel.innerText =
-        cameraMode === "environment"
-            ? "BACK CAMERA"
-            : "FRONT CAMERA";
+    if(
+        currentCamera ===
+        "environment"
+    ){
+
+        cameraMode.innerText =
+            "BACK CAMERA";
+
+        status.innerText =
+            cameraRunning
+                ? "🟢 BACK CAMERA ACTIVE"
+                : "📱 BACK CAMERA";
+
+    }
+
+    else{
+
+        cameraMode.innerText =
+            "FRONT CAMERA";
+
+        status.innerText =
+            cameraRunning
+                ? "🟢 FRONT CAMERA ACTIVE"
+                : "🤳 FRONT CAMERA";
+
+    }
 
 }
 
 
-/* =========================================
-   STOP
-========================================= */
+/* =================================
+   STOP CAMERA
+================================= */
 
-function stopAI(){
+function stopCamera(){
 
-    running = false;
+    cameraRunning =
+        false;
 
 
-    if(stream){
+    if(video.srcObject){
 
-        stream
+        video.srcObject
             .getTracks()
             .forEach(
                 track =>
                     track.stop()
             );
 
-        stream = null;
+        video.srcObject =
+            null;
 
     }
-
-
-    video.srcObject = null;
 
 
     ctx.clearRect(
@@ -1638,35 +1293,27 @@ function stopAI(){
     );
 
 
-    if(
-        "speechSynthesis" in window
-    ){
-
-        speechSynthesis.cancel();
-
-    }
-
-
-    setStatus(
-        "Stopped"
-    );
+    status.innerText =
+        "⛔ CAMERA STOPPED";
 
 
     result.innerText =
         "Ready";
 
+
+    objects.innerText =
+        "Press START SCANNING";
+
+
     confidence.innerText =
         "";
-
-    resultHint.innerText =
-        "Press START SCANNING";
 
 }
 
 
-/* =========================================
+/* =================================
    VOICE
-========================================= */
+================================= */
 
 function speakObject(name){
 
@@ -1684,13 +1331,12 @@ function speakObject(name){
 
 
     /*
-     * Don't spam the same
-     * object every frame.
+     * Don't spam voice
      */
 
     if(
-        name === lastObject &&
-        now - lastVoiceTime < 4000
+        name === lastSpokenObject &&
+        now - lastSpokenTime < 4000
     ){
 
         return;
@@ -1698,10 +1344,10 @@ function speakObject(name){
     }
 
 
-    lastObject =
+    lastSpokenObject =
         name;
 
-    lastVoiceTime =
+    lastSpokenTime =
         now;
 
 
@@ -1724,20 +1370,10 @@ function speakObject(name){
 
     }
 
-    else if(
-        name === "laptop"
-    ){
-
-        text =
-            "I see a laptop";
-
-    }
-
     else{
 
         text =
-            "I see a " +
-            name;
+            "I see a " + name;
 
     }
 
@@ -1748,11 +1384,14 @@ function speakObject(name){
         );
 
 
-    speech.rate = 1;
+    speech.rate =
+        1;
 
-    speech.pitch = 1;
+    speech.pitch =
+        1;
 
-    speech.volume = 1;
+    speech.volume =
+        1;
 
 
     speechSynthesis.cancel();
@@ -1764,15 +1403,13 @@ function speakObject(name){
 }
 
 
-/* =========================================
+/* =================================
    DETECTION
-========================================= */
+================================= */
 
-async function detect(){
+async function detectObjects(){
 
-    if(!running){
-
-        detecting = false;
+    if(!cameraRunning){
 
         return;
 
@@ -1780,26 +1417,17 @@ async function detect(){
 
 
     /*
-     * Prevent multiple
-     * detection calls from
-     * stacking.
+     * Wait for video
      */
 
-    if(detecting){
-
-        return;
-
-    }
-
-
     if(
-        video.readyState <
+        video.readyState !==
         video.HAVE_ENOUGH_DATA
     ){
 
         setTimeout(
-            detect,
-            200
+            detectObjects,
+            300
         );
 
         return;
@@ -1807,28 +1435,22 @@ async function detect(){
     }
 
 
-    detecting = true;
-
-
     /*
-     * Match canvas to video
+     * Match canvas
      */
 
-    if(
-        video.videoWidth &&
-        video.videoHeight
-    ){
+    canvas.width =
+        video.videoWidth;
 
-        canvas.width =
-            video.videoWidth;
-
-        canvas.height =
-            video.videoHeight;
-
-    }
+    canvas.height =
+        video.videoHeight;
 
 
     try{
+
+        /*
+         * ORIGINAL DETECTION
+         */
 
         const predictions =
             await model.detect(
@@ -1837,7 +1459,7 @@ async function detect(){
 
 
         /*
-         * Clear previous boxes
+         * Clear boxes
          */
 
         ctx.clearRect(
@@ -1849,23 +1471,20 @@ async function detect(){
 
 
         /*
-         * 50% threshold like
-         * the original version.
+         * Same 50%
+         * threshold as your
+         * original code.
          */
 
-        const objects =
+        const filtered =
             predictions.filter(
-                p =>
-                    p.score >= 0.50
+                prediction =>
+                    prediction.score >= 0.50
             );
 
 
-        /*
-         * Nothing detected
-         */
-
         if(
-            objects.length === 0
+            filtered.length === 0
         ){
 
             result.innerText =
@@ -1874,7 +1493,7 @@ async function detect(){
             confidence.innerText =
                 "";
 
-            resultHint.innerText =
+            objects.innerText =
                 "No clear object detected";
 
         }
@@ -1882,35 +1501,62 @@ async function detect(){
         else{
 
             /*
-             * Highest confidence first
+             * Strongest first
              */
 
-            objects.sort(
+            filtered.sort(
                 (a,b) =>
-                    b.score - a.score
+                    b.score -
+                    a.score
             );
 
 
             const best =
-                objects[0];
+                filtered[0];
 
 
-            const percent =
+            const bestConfidence =
                 Math.round(
                     best.score * 100
                 );
 
 
             result.innerText =
+                "I see a " +
                 best.class;
 
 
             confidence.innerText =
-                percent + "%";
+                bestConfidence +
+                "%";
 
 
-            resultHint.innerText =
-                "Object detected";
+            /*
+             * Object list
+             */
+
+            objects.innerHTML =
+                filtered
+                    .map(
+                        item => {
+
+                            const percent =
+                                Math.round(
+                                    item.score *
+                                    100
+                                );
+
+                            return (
+                                "• " +
+                                item.class +
+                                " — " +
+                                percent +
+                                "%"
+                            );
+
+                        }
+                    )
+                    .join("<br>");
 
 
             /*
@@ -1923,128 +1569,11 @@ async function detect(){
 
 
             /*
-             * Draw all detections
+             * Draw boxes
              */
 
-            objects.forEach(
-                p => {
-
-                    const [
-                        x,
-                        y,
-                        width,
-                        height
-                    ] =
-                        p.bbox;
-
-
-                    const percent =
-                        Math.round(
-                            p.score * 100
-                        );
-
-
-                    /*
-                     * Box
-                     */
-
-                    ctx.strokeStyle =
-                        "#00ff9d";
-
-                    ctx.lineWidth =
-                        4;
-
-                    ctx.shadowColor =
-                        "#00ff9d";
-
-                    ctx.shadowBlur =
-                        8;
-
-
-                    ctx.strokeRect(
-                        x,
-                        y,
-                        width,
-                        height
-                    );
-
-
-                    ctx.shadowBlur =
-                        0;
-
-
-                    /*
-                     * Label
-                     */
-
-                    const label =
-                        p.class +
-                        "  " +
-                        percent +
-                        "%";
-
-
-                    ctx.font =
-                        "bold 16px Arial";
-
-
-                    const textWidth =
-                        ctx.measureText(
-                            label
-                        ).width;
-
-
-                    const labelWidth =
-                        textWidth + 18;
-
-
-                    const labelHeight =
-                        28;
-
-
-                    const labelY =
-                        Math.max(
-                            0,
-                            y - labelHeight
-                        );
-
-
-                    /*
-                     * Label background
-                     */
-
-                    ctx.fillStyle =
-                        "rgba(0,255,157,.92)";
-
-
-                    ctx.beginPath();
-
-                    ctx.roundRect(
-                        x,
-                        labelY,
-                        labelWidth,
-                        labelHeight,
-                        7
-                    );
-
-                    ctx.fill();
-
-
-                    /*
-                     * Label text
-                     */
-
-                    ctx.fillStyle =
-                        "#03110c";
-
-
-                    ctx.fillText(
-                        label,
-                        x + 9,
-                        labelY + 19
-                    );
-
-                }
+            drawBoxes(
+                filtered
             );
 
         }
@@ -2053,26 +1582,24 @@ async function detect(){
 
     catch(error){
 
-        console.error(
-            "Detection error:",
-            error
-        );
+        console.error(error);
+
+        result.innerText =
+            "Detection error";
 
     }
 
 
-    detecting = false;
-
-
     /*
-     * Continue scanning
+     * Continue exactly like
+     * the original version.
      */
 
-    if(running){
+    if(cameraRunning){
 
         setTimeout(
-            detect,
-            220
+            detectObjects,
+            300
         );
 
     }
@@ -2080,9 +1607,136 @@ async function detect(){
 }
 
 
-/* =========================================
-   START
-========================================= */
+/* =================================
+   DRAW BOXES
+================================= */
+
+function drawBoxes(predictions){
+
+    ctx.lineWidth =
+        4;
+
+    ctx.font =
+        "bold 17px Arial";
+
+
+    predictions.forEach(
+        prediction => {
+
+            const [
+                x,
+                y,
+                width,
+                height
+            ] =
+                prediction.bbox;
+
+
+            const confidence =
+                Math.round(
+                    prediction.score *
+                    100
+                );
+
+
+            const label =
+                prediction.class +
+                " " +
+                confidence +
+                "%";
+
+
+            /*
+             * Glow
+             */
+
+            ctx.strokeStyle =
+                "#00ff9d";
+
+            ctx.shadowColor =
+                "#00ff9d";
+
+            ctx.shadowBlur =
+                10;
+
+
+            ctx.strokeRect(
+                x,
+                y,
+                width,
+                height
+            );
+
+
+            ctx.shadowBlur =
+                0;
+
+
+            /*
+             * Label
+             */
+
+            const textWidth =
+                ctx.measureText(
+                    label
+                ).width;
+
+
+            const labelWidth =
+                textWidth + 14;
+
+
+            const labelHeight =
+                28;
+
+
+            const labelY =
+                Math.max(
+                    0,
+                    y - labelHeight
+                );
+
+
+            ctx.fillStyle =
+                "#00ff9d";
+
+
+            ctx.beginPath();
+
+            ctx.roundRect(
+                x,
+                labelY,
+                labelWidth,
+                labelHeight,
+                6
+            );
+
+            ctx.fill();
+
+
+            /*
+             * Text
+             */
+
+            ctx.fillStyle =
+                "#03110c";
+
+
+            ctx.fillText(
+                label,
+                x + 7,
+                labelY + 19
+            );
+
+        }
+    );
+
+}
+
+
+/* =================================
+   START AI
+================================= */
 
 loadAI();
 
